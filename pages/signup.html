@@ -15,13 +15,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
-        * { font-family: 'Inter', sans-serif; }
-        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
         .glass-card {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
+        /* Background Image with Overlay */
         body {
             position: relative;
             background-image: url('../assets/images/login-bg.jpg.jpeg');
@@ -30,6 +37,7 @@
             background-repeat: no-repeat;
             background-attachment: fixed;
         }
+
         body::before {
             content: '';
             position: fixed;
@@ -40,7 +48,11 @@
             background: rgba(0, 0, 0, 0.5);
             z-index: 0;
         }
-        .w-full { position: relative; z-index: 2; }
+
+        .w-full {
+            position: relative;
+            z-index: 2;
+        }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center md:justify-start md:pl-16 lg:pl-24 p-4">
@@ -162,82 +174,40 @@
         </div>
     </div>
     
-    <!-- Firebase SDKs (compat version) -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-
     <script>
-        // 🔥 Firebase configuration (same as login)
-        const firebaseConfig = {
-            apiKey: "AIzaSyAKID2GWHPY0zJONKuAd3ixAmXw4rc-jXY",
-            authDomain: "copd-care.firebaseapp.com",
-            projectId: "copd-care",
-            storageBucket: "copd-care.firebasestorage.app",
-            messagingSenderId: "761280732177",
-            appId: "1:761280732177:web:815ec4e7968f7969fb65b0",
-            measurementId: "G-2VHWQ3FKTR"
-        };
-
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
+        // ✅ Agar already logged in hai to dashboard par bhejo
+        const existingUser = localStorage.getItem('user');
+        if (existingUser) {
+            window.location.href = 'dashboard.html';
+        }
 
         function handleSignup(event) {
             event.preventDefault();
-
-            const firstName = document.getElementById('firstName').value;
-            const lastName = document.getElementById('lastName').value;
-            const email = document.getElementById('email').value;
-            const phone = document.getElementById('phone').value;
+            
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
-            const city = document.getElementById('city').value;
-            const state = document.getElementById('state').value;
-            const terms = document.getElementById('terms').checked;
-
-            if (!terms) {
-                alert('Please agree to the Terms of Service and Privacy Policy');
-                return;
-            }
-
+            
             if (password !== confirmPassword) {
                 alert('Passwords do not match!');
                 return;
             }
-
-            // Create user with Firebase Authentication
-            auth.createUserWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    const user = userCredential.user;
-
-                    // Save additional user data to Firestore
-                    return db.collection('users').doc(user.uid).set({
-                        firstName: firstName,
-                        lastName: lastName,
-                        email: email,
-                        phone: phone,
-                        city: city,
-                        state: state,
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                })
-                .then(() => {
-                    // Redirect to dashboard
-                    window.location.href = 'dashboard.html';
-                })
-                .catch((error) => {
-                    alert('Signup failed: ' + error.message);
-                });
+            
+            // Store user data (firstName, lastName ke saath)
+            const userData = {
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                city: document.getElementById('city').value,
+                state: document.getElementById('state').value,
+                isLoggedIn: true
+            };
+            
+            localStorage.setItem('user', JSON.stringify(userData));
+            
+            // Redirect to dashboard
+            window.location.href = 'dashboard.html';
         }
-
-        // Agar user already logged in hai to direct dashboard bhej do
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                window.location.href = 'dashboard.html';
-            }
-        });
     </script>
 </body>
 </html>

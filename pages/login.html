@@ -15,13 +15,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
-        * { font-family: 'Inter', sans-serif; }
-        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
         .glass-card {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
+        /* Background Image with Overlay */
         body {
             position: relative;
             background-image: url('../assets/images/login-bg.jpg.jpeg');
@@ -30,6 +37,7 @@
             background-repeat: no-repeat;
             background-attachment: fixed;
         }
+
         body::before {
             content: '';
             position: fixed;
@@ -40,7 +48,11 @@
             background: rgba(0, 0, 0, 0.5);
             z-index: 0;
         }
-        .w-full { position: relative; z-index: 2; }
+
+        .w-full {
+            position: relative;
+            z-index: 2;
+        }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center md:justify-start md:pl-16 lg:pl-24 p-4">
@@ -111,7 +123,6 @@
                     <p class="text-sm text-blue-800 font-medium mb-2">Demo Credentials:</p>
                     <p class="text-sm text-blue-600">Email: bharat@example.com</p>
                     <p class="text-sm text-blue-600">Password: patient123</p>
-                    <button type="button" onclick="fillDemoCredentials()" class="text-xs text-blue-700 underline">Fill Demo</button>
                 </div>
                 
                 <!-- Sign Up Link -->
@@ -136,40 +147,20 @@
                     <button onclick="handleGoogleLogin()" class="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
                         <i class="fab fa-google text-red-500 mr-2"></i> Google
                     </button>
-                    <button onclick="handleFacebookLogin()" class="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
-                        <i class="fab fa-facebook text-blue-600 mr-2"></i> Facebook
+                    <button class="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
+                        <i class="fab fa-facebook text-blue-600 mr-2"></i>
+                        Facebook
                     </button>
                 </div>
             </div>
         </div>
     </div>
     
-    <!-- Firebase SDKs (compat version) -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-
     <script>
-        // 🔥 Firebase configuration (aapki apni)
-        const firebaseConfig = {
-            apiKey: "AIzaSyAKID2GWHPY0zJONKuAd3ixAmXw4rc-jXY",
-            authDomain: "copd-care.firebaseapp.com",
-            projectId: "copd-care",
-            storageBucket: "copd-care.firebasestorage.app",
-            messagingSenderId: "761280732177",
-            appId: "1:761280732177:web:815ec4e7968f7969fb65b0",
-            measurementId: "G-2VHWQ3FKTR"
-        };
-
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
-
-        // Toggle password visibility
         function togglePassword() {
             const password = document.getElementById('password');
             const icon = document.getElementById('toggleIcon');
+            
             if (password.type === 'password') {
                 password.type = 'text';
                 icon.classList.remove('fa-eye');
@@ -180,78 +171,49 @@
                 icon.classList.add('fa-eye');
             }
         }
-
-        // Handle login with email/password
+        
         function handleLogin(event) {
             event.preventDefault();
+            
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-
-            auth.signInWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    // Login successful
-                    window.location.href = 'dashboard.html';
-                })
-                .catch((error) => {
-                    alert('Login failed: ' + error.message);
-                });
-        }
-
-        // Fill demo credentials (optional)
-        function fillDemoCredentials() {
-            document.getElementById('email').value = 'bharat@example.com';
-            document.getElementById('password').value = 'patient123';
-        }
-
-        // Google Login
-        function handleGoogleLogin() {
-            const provider = new firebase.auth.GoogleAuthProvider();
-            auth.signInWithPopup(provider)
-                .then((result) => {
-                    // Agar naya user hai to Firestore me basic info save karein
-                    const user = result.user;
-                    return db.collection('users').doc(user.uid).set({
-                        firstName: user.displayName ? user.displayName.split(' ')[0] : '',
-                        lastName: user.displayName ? user.displayName.split(' ').slice(1).join(' ') : '',
-                        email: user.email,
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                    }, { merge: true });
-                })
-                .then(() => {
-                    window.location.href = 'dashboard.html';
-                })
-                .catch((error) => {
-                    alert('Google login failed: ' + error.message);
-                });
-        }
-
-        // Facebook Login (agar enable kiya ho)
-        function handleFacebookLogin() {
-            const provider = new firebase.auth.FacebookAuthProvider();
-            auth.signInWithPopup(provider)
-                .then((result) => {
-                    const user = result.user;
-                    return db.collection('users').doc(user.uid).set({
-                        firstName: user.displayName ? user.displayName.split(' ')[0] : '',
-                        lastName: user.displayName ? user.displayName.split(' ').slice(1).join(' ') : '',
-                        email: user.email,
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                    }, { merge: true });
-                })
-                .then(() => {
-                    window.location.href = 'dashboard.html';
-                })
-                .catch((error) => {
-                    alert('Facebook login failed: ' + error.message);
-                });
-        }
-
-        // Agar user already logged in hai to direct dashboard bhej do
-        auth.onAuthStateChanged((user) => {
-            if (user) {
+            
+            // Demo validation
+            if (email === 'bharat@example.com' && password === 'patient123') {
+                // ✅ Store user with firstName and lastName
+                localStorage.setItem('user', JSON.stringify({
+                    firstName: 'Bharat',
+                    lastName: 'Goswami',
+                    email: email,
+                    isLoggedIn: true
+                }));
+                
                 window.location.href = 'dashboard.html';
+            } else {
+                alert('Invalid credentials. Use demo credentials: bharat@example.com / patient123');
             }
-        });
+        }
+
+        // Google Login - Simple redirect (Note: This will still cause loop unless dashboard handles token)
+        function handleGoogleLogin() {
+            alert("Google login is temporarily disabled. Please use demo login.");
+            return;
+            // Real implementation would require backend or Firebase
+            /*
+            const googleAuthUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
+            const clientId = 'YOUR_CLIENT_ID';
+            const params = {
+                client_id: clientId,
+                redirect_uri: window.location.origin + '/pages/dashboard.html',
+                response_type: 'token',
+                scope: 'email profile',
+                include_granted_scopes: 'true',
+                state: 'pass-through-value'
+            };
+            const url = googleAuthUrl + '?' + new URLSearchParams(params).toString();
+            window.location.href = url;
+            */
+        }
     </script>
 </body>
 </html>
