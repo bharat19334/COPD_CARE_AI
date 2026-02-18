@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Diet Plan - COPD Care AI</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .sidebar-item {
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-item:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .sidebar-item.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .diet-card {
+            transition: all 0.3s ease;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        
+        .diet-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .risk-high {
+            background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
+        }
+        
+        .risk-medium {
+            background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+        }
+        
+        .risk-low {
+            background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+        }
+        
+        .nutrition-progress {
+            height: 8px;
+            border-radius: 4px;
+            background: #e5e7eb;
+            overflow: hidden;
+        }
+        
+        .nutrition-progress-bar {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        
+        .food-item {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .food-item:hover {
+            background: #f3f4f6;
+            transform: translateX(5px);
+        }
+        
+        .tab-button {
+            padding: 12px 24px;
+            font-weight: 600;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .tab-button.active {
+            border-bottom-color: #3b82f6;
+            color: #3b82f6;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate-slide-in {
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        .recipe-card {
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .recipe-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 30px rgba(0,0,0,0.15);
+        }
+        
+        .checkbox-custom {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #cbd5e0;
+            border-radius: 6px;
+            display: inline-block;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        
+        .checkbox-custom.checked {
+            background-color: #10b981;
+            border-color: #10b981;
+        }
+        
+        .checkbox-custom.checked::after {
+            content: '✓';
+            color: white;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 14px;
+        }
+        
+        .meal-progress-circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: conic-gradient(#10b981 0deg, #e5e7eb 0deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <div class="w-64 bg-white shadow-lg fixed h-full overflow-y-auto">
+            <div class="p-6">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3 mb-8">
+                    <div class="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-lungs text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="text-xl font-bold text-gray-800">COPD Care</span>
+                        <span class="text-xs font-medium text-blue-600 block">AI</span>
+                    </div>
+                </div>
+                
+                <!-- User Info -->
+                <div class="flex items-center space-x-3 mb-6 p-3 bg-gray-50 rounded-lg">
+                    <div class="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white font-bold">
+                        BG
+                    </div>
+                    <div>
+                        <div class="font-semibold" id="userName">Bharat Goswami</div>
+                        <div class="text-xs text-gray-500">Patient</div>
+                    </div>
+                </div>
+                
+                <!-- Navigation -->
+                <nav class="space-y-2">
+                    <a href="dashboard.html" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-600 hover:text-white">
+                        <i class="fas fa-home w-6"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="prediction.html" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-600 hover:text-white">
+                        <i class="fas fa-robot w-6"></i>
+                        <span>COPD Prediction</span>
+                    </a>
+                    <a href="diet-plan.html" class="sidebar-item active flex items-center space-x-3 px-4 py-3 rounded-lg">
+                        <i class="fas fa-utensils w-6"></i>
+                        <span>My Diet Plan</span>
+                    </a>
+                    <a href="doctor-search.html" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-600 hover:text-white">
+                        <i class="fas fa-map-marker-alt w-6"></i>
+                        <span>Doctor Search</span>
+                    </a>
+                    <a href="whatsapp-agent.html" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-600 hover:text-white">
+                        <i class="fab fa-whatsapp w-6"></i>
+                        <span>WhatsApp Agent</span>
+                    </a>
+                    <a href="settings.html" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-600 hover:text-white">
+                        <i class="fas fa-cog w-6"></i>
+                        <span>Settings</span>
+                    </a>
+                </nav>
+            </div>
+            
+            <!-- Logout -->
+            <div class="absolute bottom-0 w-64 p-6 border-t bg-white">
+                <button onclick="logout()" class="flex items-center space-x-3 text-gray-600 hover:text-red-600 w-full">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="flex-1 ml-64 p-8 overflow-y-auto">
+            <!-- Header -->
+            <div class="flex justify-between items-center mb-8">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-800 mb-2">My Diet Plan</h1>
+                    <p class="text-gray-600">Personalized nutrition based on your COPD risk level</p>
+                </div>
+                <div class="text-right">
+                    <div class="text-sm text-gray-500">Today's Date</div>
+                    <div class="font-semibold" id="currentDate"></div>
+                </div>
+            </div>
+            
+            <!-- Risk Level Banner - Dynamic based on risk -->
+            <div id="riskBanner" class="rounded-xl p-6 text-white mb-8 animate-slide-in">
+                <!-- Content will be populated by JavaScript -->
+            </div>
+            
+            <!-- Tabs -->
+            <div class="bg-white rounded-t-xl shadow-sm border-b">
+                <div class="flex overflow-x-auto">
+                    <div class="tab-button active" onclick="switchTab('daily')" id="tab-daily">📅 Daily Plan</div>
+                    <div class="tab-button" onclick="switchTab('weekly')" id="tab-weekly">📆 Weekly Schedule</div>
+                    <div class="tab-button" onclick="switchTab('nutrition')" id="tab-nutrition">🥗 Nutrition Guide</div>
+                    <div class="tab-button" onclick="switchTab('recipes')" id="tab-recipes">📖 Recipes</div>
+                </div>
+            </div>
+            
+            <!-- Daily Plan Tab -->
+            <div id="daily-tab" class="tab-content">
+                <!-- Today's Meals -->
+                <div class="bg-white rounded-b-xl shadow-sm p-8 mb-8">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold text-gray-800">Today's Meals</h2>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-sm text-gray-500">Total Calories:</span>
+                            <span class="font-bold text-lg" id="totalCalories">0</span>
+                            <span class="text-sm text-gray-500">kcal</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Breakfast -->
+                    <div id="breakfast-card" class="diet-card rounded-xl p-6 text-white mb-4" style="background: linear-gradient(135deg, #f59e0b, #fbbf24);">
+                        <!-- Dynamic content will be inserted here -->
+                    </div>
+                    
+                    <!-- Morning Snack (for medium/high risk) -->
+                    <div id="morningsnack-card" class="diet-card rounded-xl p-6 text-white mb-4 hidden" style="background: linear-gradient(135deg, #10b981, #34d399);">
+                        <!-- Dynamic content will be inserted here -->
+                    </div>
+                    
+                    <!-- Lunch -->
+                    <div id="lunch-card" class="diet-card rounded-xl p-6 text-white mb-4" style="background: linear-gradient(135deg, #3b82f6, #8b5cf6);">
+                        <!-- Dynamic content will be inserted here -->
+                    </div>
+                    
+                    <!-- Evening Snack (for medium/high risk) -->
+                    <div id="eveningsnack-card" class="diet-card rounded-xl p-6 text-white mb-4 hidden" style="background: linear-gradient(135deg, #8b5cf6, #d946ef);">
+                        <!-- Dynamic content will be inserted here -->
+                    </div>
+                    
+                    <!-- Dinner -->
+                    <div id="dinner-card" class="diet-card rounded-xl p-6 text-white mb-4" style="background: linear-gradient(135deg, #6366f1, #a855f7);">
+                        <!-- Dynamic content will be inserted here -->
+                    </div>
+                </div>
+                
+                <!-- Meal Tracking -->
+                <div class="bg-white rounded-xl shadow-sm p-8 mb-8">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6">✅ Today's Progress</h2>
+                    
+                    <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                        <div class="text-center p-4 bg-gray-50 rounded-lg">
+                            <div class="text-sm text-gray-600 mb-2">Breakfast</div>
+                            <div onclick="toggleMealComplete('breakfast')" id="breakfast-check" class="checkbox-custom mx-auto"></div>
+                        </div>
+                        <div class="text-center p-4 bg-gray-50 rounded-lg" id="morningsnack-check-container">
+                            <div class="text-sm text-gray-600 mb-2">Morning Snack</div>
+                            <div onclick="toggleMealComplete('morningsnack')" id="morningsnack-check" class="checkbox-custom mx-auto"></div>
+                        </div>
+                        <div class="text-center p-4 bg-gray-50 rounded-lg">
+                            <div class="text-sm text-gray-600 mb-2">Lunch</div>
+                            <div onclick="toggleMealComplete('lunch')" id="lunch-check" class="checkbox-custom mx-auto"></div>
+                        </div>
+                        <div class="text-center p-4 bg-gray-50 rounded-lg" id="eveningsnack-check-container">
+                            <div class="text-sm text-gray-600 mb-2">Evening Snack</div>
+                            <div onclick="toggleMealComplete('eveningsnack')" id="eveningsnack-check" class="checkbox-custom mx-auto"></div>
+                        </div>
+                        <div class="text-center p-4 bg-gray-50 rounded-lg">
+                            <div class="text-sm text-gray-600 mb-2">Dinner</div>
+                            <div onclick="toggleMealComplete('dinner')" id="dinner-check" class="checkbox-custom mx-auto"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 p-4 bg-blue-50 rounded-lg">
+                        <div class="flex items-center justify-between">
+                            <p class="text-sm text-blue-800">
+                                <i class="fas fa-chart-line mr-2"></i>
+                                Daily Progress: <span id="mealProgress">0/5</span> meals completed
+                            </p>
+                            <div class="w-32 h-2 bg-blue-200 rounded-full overflow-hidden">
+                                <div id="mealProgressBar" class="h-full bg-green-500" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Water Intake Tracker -->
+                <div class="bg-white rounded-xl shadow-sm p-8 mb-8">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6">💧 Water Intake Tracker</h2>
+                    
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-4">
+                            <div class="text-4xl font-bold text-blue-600" id="waterIntake">0</div>
+                            <div class="text-gray-600">cups / <span id="waterTarget">8</span> cups</div>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button onclick="addWater()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                                <i class="fas fa-plus mr-2"></i>Add Cup
+                            </button>
+                            <button onclick="resetWater()" class="border border-gray-300 px-4 py-2 rounded-lg hover:bg-gray-50">
+                                Reset
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="nutrition-progress">
+                        <div class="nutrition-progress-bar bg-blue-600" id="waterProgress" style="width: 0%"></div>
+                    </div>
+                    
+                    <p class="text-sm text-gray-500 mt-2">
+                        <i class="fas fa-info-circle text-blue-600 mr-1"></i>
+                        Proper hydration helps thin mucus and makes breathing easier
+                    </p>
+                </div>
+                
+                <!-- Foods to Eat/Avoid -->
+                <div class="grid md:grid-cols-2 gap-8 mb-8">
+                    <div class="bg-white rounded-xl shadow-sm p-6">
+                        <h3 class="text-lg font-bold text-green-600 mb-4 flex items-center">
+                            <i class="fas fa-check-circle mr-2"></i>
+                            Recommended Foods
+                        </h3>
+                        <div id="recommended-foods" class="space-y-2">
+                            <!-- Dynamic content -->
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-sm p-6">
+                        <h3 class="text-lg font-bold text-red-600 mb-4 flex items-center">
+                            <i class="fas fa-times-circle mr-2"></i>
+                            Foods to Avoid
+                        </h3>
+                        <div id="avoid-foods" class="space-y-2">
+                            <!-- Dynamic content -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Weekly Schedule Tab (Hidden by default) -->
+            <div id="weekly-tab" class="tab-content hidden">
+                <div class="bg-white rounded-b-xl shadow-sm p-8">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6">📆 Weekly Meal Schedule</h2>
+                    
+                    <div class="space-y-4" id="weekly-schedule">
+                        <!-- Dynamic weekly schedule -->
+                    </div>
+                    
+                    <div class="mt-8 flex justify-end space-x-4">
+                        <button onclick="downloadWeeklyPlan()" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">
+                            <i class="fas fa-download mr-2"></i>Download Weekly Plan
+                        </button>
+                        <button onclick="shareWeeklyPlan()" class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700">
+                            <i class="fab fa-whatsapp mr-2"></i>Share on WhatsApp
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Nutrition Guide Tab (Hidden by default) -->
+            <div id="nutrition-tab" class="tab-content hidden">
+                <div class="bg-white rounded-b-xl shadow-sm p-8">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6">🥗 Nutrition Guide for COPD</h2>
+                    
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="font-bold text-lg mb-4">Essential Nutrients</h3>
+                            <div id="essential-nutrients" class="space-y-4">
+                                <!-- Dynamic content -->
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h3 class="font-bold text-lg mb-4">Daily Targets</h3>
+                            <div id="daily-targets" class="space-y-4">
+                                <!-- Dynamic content -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Nutrient Chart -->
+                    <div class="mt-8">
+                        <canvas id="nutritionChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recipes Tab (Hidden by default) -->
+            <div id="recipes-tab" class="tab-content hidden">
+                <div class="bg-white rounded-b-xl shadow-sm p-8">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6">📖 Healthy COPD Recipes</h2>
+                    
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="recipes-grid">
+                        <!-- Dynamic recipes -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="mt-8 flex justify-end space-x-4">
+                <button onclick="printDietPlan()" class="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700">
+                    <i class="fas fa-print mr-2"></i>Print Plan
+                </button>
+                <button onclick="shareDietPlan()" class="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700">
+                    <i class="fab fa-whatsapp mr-2"></i>Share on WhatsApp
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // ==================== COMPLETE DIET PLANS DATA ====================
+        
+        // Risk levels and corresponding diet plans
+        const dietPlans = {
+            low: {
+                name: '🌟 Maintenance Diet',
+                color: 'bg-green-600',
+                gradient: 'from-green-500 to-green-600',
+                banner: 'Low Risk - Focus on maintaining healthy lifestyle with balanced nutrition',
+                calories: 1800,
+                water: 8,
+                meals: {
+                    breakfast: {
+                        title: '🌅 Light & Energizing Breakfast',
+                        description: 'Fruit bowl with Greek yogurt and honey',
+                        items: ['Mixed berries (strawberries, blueberries)', 'Greek yogurt (100g)', 'Drizzle of honey (1 tsp)', 'Sprinkle of almonds (10g)'],
+                        nutrients: {
+                            protein: '12g',
+                            fiber: '6g',
+                            carbs: '45g',
+                            fats: '8g'
+                        },
+                        calories: 350,
+                        icon: 'fa-sun',
+                        time: '8:00 AM'
+                    },
+                    lunch: {
+                        title: '☀️ Balanced Lunch',
+                        description: 'Quinoa salad with grilled vegetables',
+                        items: ['Quinoa (150g cooked)', 'Grilled zucchini', 'Cherry tomatoes', 'Feta cheese (30g)', 'Olive oil (1 tbsp)'],
+                        nutrients: {
+                            protein: '15g',
+                            fiber: '8g',
+                            carbs: '55g',
+                            fats: '12g'
+                        },
+                        calories: 450,
+                        icon: 'fa-cloud-sun',
+                        time: '1:00 PM'
+                    },
+                    dinner: {
+                        title: '🌙 Light Dinner',
+                        description: 'Grilled fish with steamed vegetables',
+                        items: ['White fish (150g)', 'Steamed broccoli', 'Brown rice (100g cooked)', 'Lemon herb seasoning'],
+                        nutrients: {
+                            protein: '25g',
+                            fiber: '5g',
+                            carbs: '40g',
+                            fats: '10g'
+                        },
+                        calories: 400,
+                        icon: 'fa-moon',
+                        time: '7:00 PM'
+                    },
+                    snacks: [] // No snacks for low risk
+                },
+                recommended: [
+                    '🍎 Fresh fruits (berries, apples, oranges)',
+                    '🥦 Vegetables (broccoli, spinach, carrots)',
+                    '🐟 Lean proteins (fish, chicken, eggs)',
+                    '🌾 Whole grains (oats, quinoa, brown rice)',
+                    '🥜 Nuts and seeds (almonds, walnuts, chia)',
+                    '💧 8 glasses of water daily'
+                ],
+                avoid: [
+                    '🚫 Processed foods and fast food',
+                    '🚫 Excessive salt and sodium',
+                    '🚫 Fried and oily foods',
+                    '🚫 Sugary drinks and sodas',
+                    '🚫 Alcohol and smoking',
+                    '🚫 Caffeine after 4 PM'
+                ],
+                nutrients: {
+                    protein: { target: 60, unit: 'g', color: '#ef4444' },
+                    fiber: { target: 25, unit: 'g', color: '#10b981' },
+                    carbs: { target: 200, unit: 'g', color: '#3b82f6' },
+                    fats: { target: 45, unit: 'g', color: '#f59e0b' }
+                },
+                weekly: [
+                    { day: 'Monday', breakfast: 'Fruit bowl with yogurt', lunch: 'Quinoa salad', dinner: 'Grilled fish' },
+                    { day: 'Tuesday', breakfast: 'Oatmeal with berries', lunch: 'Vegetable wrap', dinner: 'Chicken soup' },
+                    { day: 'Wednesday', breakfast: 'Smoothie bowl', lunch: 'Lentil soup', dinner: 'Baked salmon' },
+                    { day: 'Thursday', breakfast: 'Eggs on toast', lunch: 'Mixed salad', dinner: 'Stir-fried tofu' },
+                    { day: 'Friday', breakfast: 'Yogurt parfait', lunch: 'Quinoa bowl', dinner: 'Grilled chicken' },
+                    { day: 'Saturday', breakfast: 'Pancakes with fruit', lunch: 'Vegetable curry', dinner: 'Fish tacos' },
+                    { day: 'Sunday', breakfast: 'Avocado toast', lunch: 'Pasta salad', dinner: 'Roasted vegetables' }
+                ],
+                recipes: [
+                    { name: 'Berry Smoothie Bowl', time: '10 mins', calories: 280, protein: '8g', image: 'fa-blender' },
+                    { name: 'Quinoa Garden Salad', time: '15 mins', calories: 320, protein: '12g', image: 'fa-salad' },
+                    { name: 'Lemon Herb Fish', time: '20 mins', calories: 290, protein: '28g', image: 'fa-fish' }
+                ]
+            },
+            
+            medium: {
+                name: '🟠 Respiratory Support Diet',
+                color: 'bg-orange-500',
+                gradient: 'from-orange-500 to-yellow-500',
+                banner: 'Moderate Risk - Focus on anti-inflammatory and lung-supporting foods',
+                calories: 2000,
+                water: 8,
+                meals: {
+                    breakfast: {
+                        title: '🌅 Anti-inflammatory Breakfast',
+                        description: 'Oatmeal with berries and turmeric',
+                        items: ['Steel-cut oats (50g)', 'Mixed berries', 'Ground turmeric (1/2 tsp)', 'Fresh ginger', 'Almond milk'],
+                        nutrients: {
+                            protein: '10g',
+                            fiber: '8g',
+                            carbs: '50g',
+                            fats: '6g'
+                        },
+                        calories: 380,
+                        icon: 'fa-sun',
+                        time: '8:00 AM'
+                    },
+                    morningSnack: {
+                        title: '🍎 Mid-morning Snack',
+                        description: 'Green anti-inflammatory smoothie',
+                        items: ['Spinach (handful)', 'Banana', 'Apple', 'Ginger (1 inch)', 'Chia seeds (1 tbsp)'],
+                        nutrients: {
+                            protein: '5g',
+                            fiber: '4g',
+                            carbs: '25g',
+                            fats: '3g'
+                        },
+                        calories: 150,
+                        icon: 'fa-apple-alt',
+                        time: '11:00 AM'
+                    },
+                    lunch: {
+                        title: '☀️ Nourishing Lunch',
+                        description: 'Grilled chicken with quinoa and vegetables',
+                        items: ['Grilled chicken breast (150g)', 'Quinoa (100g)', 'Steamed broccoli', 'Carrots', 'Olive oil (1 tbsp)'],
+                        nutrients: {
+                            protein: '35g',
+                            fiber: '7g',
+                            carbs: '45g',
+                            fats: '15g'
+                        },
+                        calories: 520,
+                        icon: 'fa-cloud-sun',
+                        time: '1:30 PM'
+                    },
+                    eveningSnack: {
+                        title: '🌆 Evening Snack',
+                        description: 'Fruit and nuts for sustained energy',
+                        items: ['Apple slices', 'Almonds (10 pieces)', 'Walnuts (5 pieces)'],
+                        nutrients: {
+                            protein: '6g',
+                            fiber: '5g',
+                            carbs: '20g',
+                            fats: '12g'
+                        },
+                        calories: 200,
+                        icon: 'fa-apple-alt',
+                        time: '4:30 PM'
+                    },
+                    dinner: {
+                        title: '🌙 Anti-inflammatory Dinner',
+                        description: 'Salmon with sweet potato and greens',
+                        items: ['Grilled salmon (150g)', 'Roasted sweet potato', 'Sautéed kale', 'Garlic (2 cloves)', 'Lemon juice'],
+                        nutrients: {
+                            protein: '30g',
+                            fiber: '6g',
+                            carbs: '35g',
+                            fats: '18g'
+                        },
+                        calories: 450,
+                        icon: 'fa-moon',
+                        time: '7:30 PM'
+                    }
+                },
+                recommended: [
+                    '🫐 Antioxidant-rich berries (blueberries, strawberries)',
+                    '🐟 Omega-3 rich fish (salmon, mackerel, sardines)',
+                    '🥦 Cruciferous vegetables (broccoli, cauliflower)',
+                    '🧄 Garlic, onions, and ginger',
+                    '🌿 Turmeric and anti-inflammatory spices',
+                    '🥑 Healthy fats (avocado, olive oil)',
+                    '🍵 Green tea (rich in antioxidants)'
+                ],
+                avoid: [
+                    '🚫 Dairy products (can increase mucus)',
+                    '🚫 Fried and processed foods',
+                    '🚫 Excess salt and preservatives',
+                    '🚫 Carbonated drinks',
+                    '🚫 Cold foods and drinks',
+                    '🚫 Red meat',
+                    '🚫 Sugar and artificial sweeteners'
+                ],
+                nutrients: {
+                    protein: { target: 75, unit: 'g', color: '#ef4444' },
+                    fiber: { target: 30, unit: 'g', color: '#10b981' },
+                    carbs: { target: 220, unit: 'g', color: '#3b82f6' },
+                    fats: { target: 55, unit: 'g', color: '#f59e0b' }
+                },
+                weekly: [
+                    { day: 'Monday', breakfast: 'Turmeric oatmeal', lunch: 'Grilled chicken salad', dinner: 'Baked salmon' },
+                    { day: 'Tuesday', breakfast: 'Green smoothie', lunch: 'Lentil soup', dinner: 'Fish curry' },
+                    { day: 'Wednesday', breakfast: 'Berry bowl', lunch: 'Quinoa pulao', dinner: 'Grilled fish' },
+                    { day: 'Thursday', breakfast: 'Ginger tea + fruits', lunch: 'Vegetable khichdi', dinner: 'Chicken soup' },
+                    { day: 'Friday', breakfast: 'Oatmeal with nuts', lunch: 'Mixed bean salad', dinner: 'Baked trout' },
+                    { day: 'Saturday', breakfast: 'Smoothie bowl', lunch: 'Vegetable stir-fry', dinner: 'Grilled tofu' },
+                    { day: 'Sunday', breakfast: 'Fruit salad', lunch: 'Rice and dal', dinner: 'Roasted vegetables' }
+                ],
+                recipes: [
+                    { name: 'Turmeric Golden Milk', time: '5 mins', calories: 120, protein: '3g', image: 'fa-mug-hot' },
+                    { name: 'Anti-inflammatory Bowl', time: '20 mins', calories: 450, protein: '25g', image: 'fa-bowl-food' },
+                    { name: 'Ginger Garlic Soup', time: '25 mins', calories: 180, protein: '8g', image: 'fa-utensils' },
+                    { name: 'Berry Turmeric Smoothie', time: '8 mins', calories: 220, protein: '6g', image: 'fa-blender' }
+                ]
+            },
+            
+            high: {
+                name: '🔴 Clinical Recovery Diet',
+                color: 'bg-red-600',
+                gradient: 'from-red-500 to-red-600',
+                banner: 'High Risk - Immediate dietary intervention required. Focus on healing and recovery',
+                calories: 2200,
+                water: 10,
+                meals: {
+                    breakfast: {
+                        title: '🌅 Therapeutic Breakfast',
+                        description: 'High-protein smoothie with supplements',
+                        items: ['Protein powder (1 scoop)', 'Banana', 'Spinach', 'Almond milk', 'Flax seeds (1 tbsp)', 'Vitamin D supplement'],
+                        nutrients: {
+                            protein: '25g',
+                            fiber: '6g',
+                            carbs: '40g',
+                            fats: '10g'
+                        },
+                        calories: 380,
+                        icon: 'fa-sun',
+                        time: '8:00 AM'
+                    },
+                    morningSnack: {
+                        title: '🍎 Healing Snack',
+                        description: 'Protein-rich snack for recovery',
+                        items: ['Greek yogurt (150g)', 'Mixed berries', 'Honey (1 tsp)', 'Walnuts (chopped)'],
+                        nutrients: {
+                            protein: '15g',
+                            fiber: '3g',
+                            carbs: '20g',
+                            fats: '8g'
+                        },
+                        calories: 200,
+                        icon: 'fa-apple-alt',
+                        time: '11:00 AM'
+                    },
+                    lunch: {
+                        title: '☀️ Recovery Lunch',
+                        description: 'Therapeutic meal for lung healing',
+                        items: ['Lean chicken (150g)', 'Sweet potato (mashed)', 'Steamed spinach', 'Garlic', 'Olive oil'],
+                        nutrients: {
+                            protein: '40g',
+                            fiber: '8g',
+                            carbs: '50g',
+                            fats: '15g'
+                        },
+                        calories: 550,
+                        icon: 'fa-cloud-sun',
+                        time: '1:30 PM'
+                    },
+                    eveningSnack: {
+                        title: '🌆 Nutritional Supplement',
+                        description: 'High-protein smoothie or supplement',
+                        items: ['Whey protein shake', 'Banana', 'Peanut butter (1 tbsp)', 'Chia seeds'],
+                        nutrients: {
+                            protein: '20g',
+                            fiber: '4g',
+                            carbs: '25g',
+                            fats: '10g'
+                        },
+                        calories: 250,
+                        icon: 'fa-flask',
+                        time: '4:30 PM'
+                    },
+                    dinner: {
+                        title: '🌙 Healing Dinner',
+                        description: 'Easy-to-digest therapeutic meal',
+                        items: ['Poached fish (150g)', 'Mashed potatoes', 'Steamed carrots', 'Bone broth', 'Light herbs'],
+                        nutrients: {
+                            protein: '35g',
+                            fiber: '5g',
+                            carbs: '45g',
+                            fats: '12g'
+                        },
+                        calories: 480,
+                        icon: 'fa-moon',
+                        time: '7:00 PM'
+                    }
+                },
+                recommended: [
+                    '💊 High-quality protein supplements (as prescribed)',
+                    '🐟 Omega-3 supplements (fish oil)',
+                    '🥚 Easy-to-digest proteins (eggs, fish)',
+                    '🍌 Soft fruits (bananas, cooked apples)',
+                    '🥕 Cooked vegetables (pureed if needed)',
+                    '🍚 Well-cooked grains (khichdi, congee)',
+                    '💧 Electrolyte-rich fluids',
+                    '🧂 Moderate salt for electrolyte balance'
+                ],
+                avoid: [
+                    '🚫 ALL raw foods and salads',
+                    '🚫 Hard-to-digest fibers',
+                    '🚫 Dairy products (if mucus increases)',
+                    '🚫 Spicy and irritant foods',
+                    '🚫 Gas-forming vegetables',
+                    '🚫 Cold foods and ice cream',
+                    '🚫 Caffeine and alcohol',
+                    '🚫 Processed foods completely'
+                ],
+                nutrients: {
+                    protein: { target: 90, unit: 'g', color: '#ef4444' },
+                    fiber: { target: 20, unit: 'g', color: '#10b981' },
+                    carbs: { target: 200, unit: 'g', color: '#3b82f6' },
+                    fats: { target: 50, unit: 'g', color: '#f59e0b' }
+                },
+                weekly: [
+                    { day: 'Monday', breakfast: 'Protein smoothie', lunch: 'Chicken soup', dinner: 'Poached fish' },
+                    { day: 'Tuesday', breakfast: 'Scrambled eggs', lunch: 'Khichdi', dinner: 'Fish stew' },
+                    { day: 'Wednesday', breakfast: 'Protein shake', lunch: 'Vegetable soup', dinner: 'Grilled fish' },
+                    { day: 'Thursday', breakfast: 'Soft boiled eggs', lunch: 'Chicken congee', dinner: 'Mashed fish' },
+                    { day: 'Friday', breakfast: 'Smoothie bowl', lunch: 'Lentil soup', dinner: 'Baked fish' },
+                    { day: 'Saturday', breakfast: 'Protein pancake', lunch: 'Rice porridge', dinner: 'Fish curry (mild)' },
+                    { day: 'Sunday', breakfast: 'Fruit puree', lunch: 'Vegetable khichdi', dinner: 'Light chicken stew' }
+                ],
+                recipes: [
+                    { name: 'Healing Bone Broth', time: '4 hours', calories: 80, protein: '10g', image: 'fa-mug-hot' },
+                    { name: 'Therapeutic Khichdi', time: '30 mins', calories: 280, protein: '12g', image: 'fa-utensils' },
+                    { name: 'Protein Recovery Shake', time: '5 mins', calories: 250, protein: '25g', image: 'fa-blender' },
+                    { name: 'Steamed Fish with Veggies', time: '20 mins', calories: 320, protein: '30g', image: 'fa-fish' },
+                    { name: 'Chicken & Vegetable Soup', time: '45 mins', calories: 220, protein: '22g', image: 'fa-utensils' }
+                ]
+            }
+        };
+        
+        // ==================== STATE MANAGEMENT ====================
+        
+        // Current risk level (can be changed based on prediction)
+        let currentRisk = 'medium'; // Change this to 'low', 'medium', or 'high' for testing
+        
+        // Track meal completion
+        let mealStatus = {
+            breakfast: false,
+            morningsnack: false,
+            lunch: false,
+            eveningsnack: false,
+            dinner: false
+        };
+        
+        // Track water intake
+        let waterIntake = 0;
+        
+        // Chart instance
+        let nutritionChart;
+        
+        // ==================== INITIALIZATION ====================
+        
+        // Check login
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+            document.getElementById('userName').textContent = (user.firstName || 'Bharat') + ' ' + (user.lastName || 'Goswami');
+            
+            // Set current date
+            const today = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('currentDate').textContent = today.toLocaleDateString('en-US', options);
+            
+            // Load diet plan based on risk
+            loadDietPlan(currentRisk);
+            
+            // Initialize water tracker
+            updateWaterDisplay();
+        });
+        
+        // ==================== DIET PLAN LOADING ====================
+        
+        function loadDietPlan(riskLevel) {
+            const plan = dietPlans[riskLevel];
+            if (!plan) return;
+            
+            // Update risk banner
+            const banner = document.getElementById('riskBanner');
+            banner.className = `rounded-xl p-6 text-white mb-8 animate-slide-in bg-gradient-to-r ${plan.gradient}`;
+            banner.innerHTML = `
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-2xl font-bold mb-2">${plan.name}</h2>
+                        <p>${plan.banner}</p>
+                        <div class="flex items-center mt-3 space-x-4">
+                            <span class="bg-white/20 px-3 py-1 rounded-full text-sm">🔥 ${plan.calories} kcal/day</span>
+                            <span class="bg-white/20 px-3 py-1 rounded-full text-sm">💧 ${plan.water} cups water</span>
+                        </div>
+                    </div>
+                    <i class="fas fa-utensils text-6xl text-white/30"></i>
+                </div>
+            `;
+            
+            // Update water target
+            document.getElementById('waterTarget').textContent = plan.water;
+            
+            // Load meals
+            loadMeals(plan);
+            
+            // Load recommended/avoid foods
+            loadFoodLists(plan);
+            
+            // Load weekly schedule
+            loadWeeklySchedule(plan);
+            
+            // Load nutrition guide
+            loadNutritionGuide(plan);
+            
+            // Load recipes
+            loadRecipes(plan);
+            
+            // Update total calories
+            updateTotalCalories(plan);
+            
+            // Show/hide snack sections based on risk level
+            const showSnacks = riskLevel !== 'low';
+            document.getElementById('morningsnack-card').classList.toggle('hidden', !showSnacks);
+            document.getElementById('eveningsnack-card').classList.toggle('hidden', !showSnacks);
+            document.getElementById('morningsnack-check-container').classList.toggle('hidden', !showSnacks);
+            document.getElementById('eveningsnack-check-container').classList.toggle('hidden', !showSnacks);
+            
+            // Initialize nutrition chart
+            initNutritionChart(plan);
+        }
+        
+        function loadMeals(plan) {
+            const meals = plan.meals;
+            
+            // Breakfast
+            if (meals.breakfast) {
+                document.getElementById('breakfast-card').innerHTML = createMealHTML(meals.breakfast, 'breakfast');
+            }
+            
+            // Morning Snack (if exists)
+            if (meals.morningSnack) {
+                document.getElementById('morningsnack-card').innerHTML = createMealHTML(meals.morningSnack, 'morningsnack');
+            }
+            
+            // Lunch
+            if (meals.lunch) {
+                document.getElementById('lunch-card').innerHTML = createMealHTML(meals.lunch, 'lunch');
+            }
+            
+            // Evening Snack (if exists)
+            if (meals.eveningSnack) {
+                document.getElementById('eveningsnack-card').innerHTML = createMealHTML(meals.eveningSnack, 'eveningsnack');
+            }
+            
+            // Dinner
+            if (meals.dinner) {
+                document.getElementById('dinner-card').innerHTML = createMealHTML(meals.dinner, 'dinner');
+            }
+        }
+        
+        function createMealHTML(meal, mealId) {
+            const nutrients = meal.nutrients;
+            return `
+                <div class="flex items-start justify-between">
+                    <div class="flex-1">
+                        <div class="flex items-center space-x-3 mb-3">
+                            <i class="fas ${meal.icon || 'fa-utensils'} text-2xl"></i>
+                            <h3 class="text-xl font-semibold">${meal.title}</h3>
+                            <span class="bg-white/20 px-3 py-1 rounded-full text-sm">${meal.time || ''}</span>
+                        </div>
+                        <h4 class="text-2xl font-bold mb-3">${meal.description}</h4>
+                        <ul class="mb-4 space-y-1">
+                            ${meal.items.map(item => `<li class="flex items-center"><i class="fas fa-check-circle mr-2 text-sm"></i>${item}</li>`).join('')}
+                        </ul>
+                        <div class="grid grid-cols-4 gap-4 mt-4">
+                            <div class="bg-white/10 rounded-lg p-2 text-center">
+                                <div class="font-bold">${nutrients.protein}</div>
+                                <div class="text-xs">Protein</div>
+                            </div>
+                            <div class="bg-white/10 rounded-lg p-2 text-center">
+                                <div class="font-bold">${nutrients.fiber}</div>
+                                <div class="text-xs">Fiber</div>
+                            </div>
+                            <div class="bg-white/10 rounded-lg p-2 text-center">
+                                <div class="font-bold">${nutrients.carbs}</div>
+                                <div class="text-xs">Carbs</div>
+                            </div>
+                            <div class="bg-white/10 rounded-lg p-2 text-center">
+                                <div class="font-bold">${nutrients.fats}</div>
+                                <div class="text-xs">Fats</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="bg-white/20 rounded-lg px-4 py-2">
+                            <span class="text-2xl font-bold">${meal.calories}</span>
+                            <span class="text-sm">kcal</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function loadFoodLists(plan) {
+            // Recommended foods
+            const recommendedDiv = document.getElementById('recommended-foods');
+            recommendedDiv.innerHTML = plan.recommended.map(food => 
+                `<div class="food-item p-2 rounded-lg flex items-center">
+                    <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                    <span>${food}</span>
+                </div>`
+            ).join('');
+            
+            // Foods to avoid
+            const avoidDiv = document.getElementById('avoid-foods');
+            avoidDiv.innerHTML = plan.avoid.map(food => 
+                `<div class="food-item p-2 rounded-lg flex items-center">
+                    <i class="fas fa-times-circle text-red-500 mr-3"></i>
+                    <span>${food}</span>
+                </div>`
+            ).join('');
+        }
+        
+        function loadWeeklySchedule(plan) {
+            const scheduleDiv = document.getElementById('weekly-schedule');
+            scheduleDiv.innerHTML = plan.weekly.map(day => `
+                <div class="bg-gray-50 rounded-lg p-4 hover:shadow-md transition">
+                    <div class="grid grid-cols-4 gap-4 items-center">
+                        <div class="font-bold text-blue-600">${day.day}</div>
+                        <div class="col-span-3 grid grid-cols-3 gap-2 text-sm">
+                            <div><i class="fas fa-sun text-yellow-500 mr-1"></i>${day.breakfast}</div>
+                            <div><i class="fas fa-cloud-sun text-blue-500 mr-1"></i>${day.lunch}</div>
+                            <div><i class="fas fa-moon text-indigo-500 mr-1"></i>${day.dinner}</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function loadNutritionGuide(plan) {
+            // Essential nutrients
+            const nutrientsDiv = document.getElementById('essential-nutrients');
+            nutrientsDiv.innerHTML = Object.entries(plan.nutrients).map(([key, value]) => `
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <div>
+                        <span class="font-medium capitalize">${key}</span>
+                        <span class="text-sm text-gray-500 ml-2">target: ${value.target}${value.unit}</span>
+                    </div>
+                    <div class="w-32 h-2 bg-gray-200 rounded-full overflow-hidden">
+                        <div class="h-full" style="width: 0%; background-color: ${value.color};" id="progress-${key}"></div>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Daily targets
+            const targetsDiv = document.getElementById('daily-targets');
+            targetsDiv.innerHTML = `
+                <div class="p-4 bg-blue-50 rounded-lg">
+                    <h4 class="font-bold mb-3">Today's Targets</h4>
+                    <div class="space-y-3">
+                        <div class="flex justify-between">
+                            <span>Calories</span>
+                            <span class="font-bold"><span id="currentCalories">0</span>/${plan.calories} kcal</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Water</span>
+                            <span class="font-bold"><span id="currentWater">0</span>/${plan.water} cups</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Meals Completed</span>
+                            <span class="font-bold"><span id="completedMeals">0</span>/5</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function loadRecipes(plan) {
+            const recipesDiv = document.getElementById('recipes-grid');
+            recipesDiv.innerHTML = plan.recipes.map(recipe => `
+                <div class="recipe-card bg-gray-50 rounded-xl p-6 cursor-pointer" onclick="viewRecipe('${recipe.name}')">
+                    <div class="w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas ${recipe.image} text-white text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold text-center mb-2">${recipe.name}</h3>
+                    <div class="flex justify-center space-x-4 text-sm text-gray-600">
+                        <span><i class="far fa-clock mr-1"></i>${recipe.time}</span>
+                        <span><i class="fas fa-fire mr-1"></i>${recipe.calories} kcal</span>
+                        <span><i class="fas fa-dumbbell mr-1"></i>${recipe.protein}</span>
+                    </div>
+                    <button class="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
+                        View Recipe
+                    </button>
+                </div>
+            `).join('');
+        }
+        
+        function updateTotalCalories(plan) {
+            let total = 0;
+            if (plan.meals.breakfast) total += plan.meals.breakfast.calories;
+            if (plan.meals.morningSnack) total += plan.meals.morningSnack.calories;
+            if (plan.meals.lunch) total += plan.meals.lunch.calories;
+            if (plan.meals.eveningSnack) total += plan.meals.eveningSnack.calories;
+            if (plan.meals.dinner) total += plan.meals.dinner.calories;
+            
+            document.getElementById('totalCalories').textContent = total;
+            document.getElementById('currentCalories').textContent = total;
+        }
+        
+        function initNutritionChart(plan) {
+            const ctx = document.getElementById('nutritionChart').getContext('2d');
+            
+            if (nutritionChart) {
+                nutritionChart.destroy();
+            }
+            
+            nutritionChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Protein', 'Fiber', 'Carbs', 'Healthy Fats'],
+                    datasets: [{
+                        label: 'Current Intake',
+                        data: [0, 0, 0, 0],
+                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                        borderColor: '#3b82f6',
+                        pointBackgroundColor: '#3b82f6'
+                    }, {
+                        label: 'Target',
+                        data: [
+                            plan.nutrients.protein.target,
+                            plan.nutrients.fiber.target,
+                            plan.nutrients.carbs.target,
+                            plan.nutrients.fats.target
+                        ],
+                        backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                        borderColor: '#ef4444',
+                        pointBackgroundColor: '#ef4444',
+                        borderDash: [5, 5]
+                    }]
+                },
+                options: {
+                    scales: {
+                        r: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+        
+        // ==================== TAB SWITCHING ====================
+        
+        function switchTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(`tab-${tabName}`).classList.add('active');
+            
+            // Show selected tab content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            document.getElementById(`${tabName}-tab`).classList.remove('hidden');
+        }
+        
+        // ==================== MEAL TRACKING ====================
+        
+        function toggleMealComplete(mealId) {
+            const checkbox = document.getElementById(`${mealId}-check`);
+            mealStatus[mealId] = !mealStatus[mealId];
+            
+            if (mealStatus[mealId]) {
+                checkbox.classList.add('checked');
+            } else {
+                checkbox.classList.remove('checked');
+            }
+            
+            updateMealProgress();
+        }
+        
+        function updateMealProgress() {
+            const totalMeals = Object.keys(mealStatus).length;
+            const completed = Object.values(mealStatus).filter(v => v).length;
+            
+            document.getElementById('mealProgress').textContent = `${completed}/${totalMeals}`;
+            document.getElementById('mealProgressBar').style.width = `${(completed/totalMeals)*100}%`;
+            document.getElementById('completedMeals').textContent = completed;
+        }
+        
+        // ==================== WATER TRACKING ====================
+        
+        function addWater() {
+            const plan = dietPlans[currentRisk];
+            if (waterIntake < plan.water) {
+                waterIntake++;
+                updateWaterDisplay();
+            }
+        }
+        
+        function resetWater() {
+            waterIntake = 0;
+            updateWaterDisplay();
+        }
+        
+        function updateWaterDisplay() {
+            const plan = dietPlans[currentRisk];
+            document.getElementById('waterIntake').textContent = waterIntake;
+            document.getElementById('currentWater').textContent = waterIntake;
+            
+            const percentage = (waterIntake / plan.water) * 100;
+            document.getElementById('waterProgress').style.width = `${percentage}%`;
+        }
+        
+        // ==================== ACTION FUNCTIONS ====================
+        
+        function viewRecipe(recipeName) {
+            alert(`Opening recipe: ${recipeName}\n\nFull recipe details would be shown here.`);
+        }
+        
+        function downloadWeeklyPlan() {
+            alert('Downloading weekly meal plan as PDF...');
+        }
+        
+        function shareWeeklyPlan() {
+            const phoneNumber = "+14155238886";
+            const message = encodeURIComponent("Here's my weekly COPD diet plan. Can you help me follow it?");
+            const url = `https://wa.me/${phoneNumber}?text=${message}`;
+            window.open(url, '_blank');
+        }
+        
+        function printDietPlan() {
+            window.print();
+        }
+        
+        function shareDietPlan() {
+            const phoneNumber = "+14155238886";
+            const message = encodeURIComponent("Hello, I need help with my COPD diet plan.");
+            const url = `https://wa.me/${phoneNumber}?text=${message}`;
+            window.open(url, '_blank');
+        }
+        
+        function logout() {
+            localStorage.removeItem('user');
+            window.location.href = '../index.html';
+        }
+        
+        // Make functions globally available
+        window.switchTab = switchTab;
+        window.toggleMealComplete = toggleMealComplete;
+        window.addWater = addWater;
+        window.resetWater = resetWater;
+        window.viewRecipe = viewRecipe;
+        window.downloadWeeklyPlan = downloadWeeklyPlan;
+        window.shareWeeklyPlan = shareWeeklyPlan;
+        window.printDietPlan = printDietPlan;
+        window.shareDietPlan = shareDietPlan;
+        window.logout = logout;
+    </script>
+</body>
+</html>

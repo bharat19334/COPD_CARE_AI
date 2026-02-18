@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Agent - COPD Care AI</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .sidebar-item {
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-item:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .sidebar-item.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .whatsapp-bg {
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+        }
+        
+        .chat-message {
+            max-width: 70%;
+            margin-bottom: 16px;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .message-user {
+            background: #e5e7eb;
+            color: #1f2937;
+            border-radius: 18px 18px 4px 18px;
+        }
+        
+        .message-bot {
+            background: #2563eb;
+            color: white;
+            border-radius: 18px 18px 18px 4px;
+        }
+        
+        .quick-reply {
+            border: 1px solid #2563eb;
+            color: #2563eb;
+            transition: all 0.3s ease;
+        }
+        
+        .quick-reply:hover {
+            background: #2563eb;
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    
+    <div class="flex h-screen">
+        <!-- Sidebar (same as before) -->
+        <div class="w-64 bg-white shadow-lg fixed h-full">
+            <div class="p-6">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3 mb-8">
+                    <div class="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-lungs text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="text-xl font-bold text-gray-800">COPD Care</span>
+                        <span class="text-xs font-medium text-blue-600 block">AI</span>
+                    </div>
+                </div>
+                
+                <!-- User Info -->
+                <div class="flex items-center space-x-3 mb-6 p-3 bg-gray-50 rounded-lg">
+                    <div class="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white font-bold">
+                        BG
+                    </div>
+                    <div>
+                        <div class="font-semibold" id="userName">Bharat Goswami</div>
+                        <div class="text-xs text-gray-500">Patient</div>
+                    </div>
+                </div>
+                
+                <!-- Navigation -->
+                <nav class="space-y-2">
+                    <a href="dashboard.html" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-600 hover:text-white">
+                        <i class="fas fa-home w-6"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="prediction.html" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-600 hover:text-white">
+                        <i class="fas fa-robot w-6"></i>
+                        <span>COPD Prediction</span>
+                    </a>
+                    <a href="diet-plan.html" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-600 hover:text-white">
+                        <i class="fas fa-utensils w-6"></i>
+                        <span>My Diet Plan</span>
+                    </a>
+                    <a href="doctor-search.html" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-600 hover:text-white">
+                        <i class="fas fa-map-marker-alt w-6"></i>
+                        <span>Doctor Search</span>
+                    </a>
+                    <a href="whatsapp-agent.html" class="sidebar-item active flex items-center space-x-3 px-4 py-3 rounded-lg">
+                        <i class="fab fa-whatsapp w-6"></i>
+                        <span>WhatsApp Agent</span>
+                    </a>
+                    <a href="settings.html" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-600 hover:text-white">
+                        <i class="fas fa-cog w-6"></i>
+                        <span>Settings</span>
+                    </a>
+                </nav>
+            </div>
+            
+            <!-- Logout -->
+            <div class="absolute bottom-0 w-64 p-6 border-t">
+                <button onclick="logout()" class="flex items-center space-x-3 text-gray-600 hover:text-red-600 w-full">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="flex-1 ml-64 p-8 overflow-y-auto">
+            <!-- Header -->
+            <div class="flex justify-between items-center mb-8">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-800 mb-2">WhatsApp AI Agent</h1>
+                    <p class="text-gray-600">24/7 AI-powered assistance for your COPD management</p>
+                </div>
+                
+                <!-- Connect WhatsApp Button -->
+                <button onclick="connectWhatsApp()" class="whatsapp-bg text-white px-6 py-3 rounded-lg font-semibold hover:shadow-lg transition">
+                    <i class="fab fa-whatsapp mr-2 text-xl"></i>
+                    Connect to WhatsApp
+                </button>
+            </div>
+            
+            <!-- Main Grid -->
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- Chat Section -->
+                <div class="lg:col-span-2">
+                    <div class="bg-white rounded-xl shadow-sm h-[600px] flex flex-col">
+                        <!-- Chat Header -->
+                        <div class="whatsapp-bg text-white p-4 rounded-t-xl flex items-center space-x-3">
+                            <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center">
+                                <i class="fab fa-whatsapp text-3xl text-green-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold">COPD Care AI Assistant</h3>
+                                <p class="text-sm text-white/80">Typically replies instantly</p>
+                            </div>
+                            <span class="ml-auto bg-green-300 text-green-800 text-xs px-2 py-1 rounded-full">Online</span>
+                        </div>
+                        
+                        <!-- Chat Messages -->
+                        <div id="chatMessages" class="flex-1 overflow-y-auto p-6 space-y-4">
+                            <!-- Welcome Message -->
+                            <div class="chat-message message-bot p-4">
+                                <p>👋 Hello Bharat! I'm your COPD Care AI Assistant.</p>
+                                <p class="text-sm mt-2">How can I help you today? You can ask me about:</p>
+                                <ul class="text-sm mt-2 list-disc list-inside">
+                                    <li>Your health status and risk level</li>
+                                    <li>Diet recommendations</li>
+                                    <li>Medicine reminders</li>
+                                    <li>Breathing exercises</li>
+                                    <li>Finding doctors</li>
+                                </ul>
+                                <span class="text-xs text-white/60 mt-2 block">Just now</span>
+                            </div>
+                            
+                            <!-- Risk Info Message -->
+                            <div class="chat-message message-bot p-4">
+                                <p>Based on your last assessment (Feb 11, 2026):</p>
+                                <p class="font-bold mt-2">📊 Risk Level: Mild (72%)</p>
+                                <p class="text-sm mt-2">Recommendations:</p>
+                                <ul class="text-sm mt-1 list-disc list-inside">
+                                    <li>Monitor symptoms daily</li>
+                                    <li>Follow your diet plan</li>
+                                    <li>Practice breathing exercises</li>
+                                </ul>
+                                <span class="text-xs text-white/60 mt-2 block">2 minutes ago</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Quick Replies -->
+                        <div class="px-6 py-3 border-t">
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="sendQuickReply('My risk level')" class="quick-reply px-4 py-2 rounded-full text-sm">📊 My risk level</button>
+                                <button onclick="sendQuickReply('Today\'s diet')" class="quick-reply px-4 py-2 rounded-full text-sm">🥗 Today's diet</button>
+                                <button onclick="sendQuickReply('Medicine reminder')" class="quick-reply px-4 py-2 rounded-full text-sm">💊 Medicine reminder</button>
+                                <button onclick="sendQuickReply('Breathing exercises')" class="quick-reply px-4 py-2 rounded-full text-sm">🌬️ Breathing exercises</button>
+                                <button onclick="sendQuickReply('Find doctor')" class="quick-reply px-4 py-2 rounded-full text-sm">👨‍⚕️ Find doctor</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Message Input -->
+                        <div class="p-4 border-t">
+                            <div class="flex space-x-2">
+                                <input type="text" id="messageInput" placeholder="Type your message..." 
+                                       class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                       onkeypress="handleKeyPress(event)">
+                                <button onclick="sendMessage()" class="whatsapp-bg text-white px-6 py-3 rounded-lg hover:shadow-lg">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right Sidebar -->
+                <div class="space-y-6">
+                    <!-- WhatsApp Integration Card -->
+                    <div class="bg-white rounded-xl shadow-sm p-6">
+                        <h3 class="text-lg font-bold text-gray-800 mb-4">WhatsApp Integration</h3>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-center space-x-3 p-3 bg-green-50 rounded-lg">
+                                <i class="fab fa-whatsapp text-2xl text-green-600"></i>
+                                <div>
+                                    <p class="font-semibold">Get reminders on WhatsApp</p>
+                                    <p class="text-sm text-gray-600">Daily health tips and medicine alerts</p>
+                                </div>
+                            </div>
+                            
+                            <div class="border-t pt-4">
+                                <h4 class="font-semibold mb-3">Connect via WhatsApp</h4>
+                                <p class="text-sm text-gray-600 mb-3">Get instant notifications and chat with AI on WhatsApp</p>
+                                
+                                <div class="space-y-3">
+                                    <label class="flex items-center space-x-3">
+                                        <input type="radio" name="connect" checked class="text-blue-600">
+                                        <span class="text-sm">Send invite via WhatsApp</span>
+                                    </label>
+                                    <label class="flex items-center space-x-3">
+                                        <input type="radio" name="connect" class="text-blue-600">
+                                        <span class="text-sm">Scan QR code</span>
+                                    </label>
+                                </div>
+                                
+                                <div class="mt-4 flex justify-center">
+                                    <div class="bg-gray-100 p-4 rounded-lg w-32 h-32 flex items-center justify-center">
+                                        <i class="fas fa-qrcode text-6xl text-gray-400"></i>
+                                    </div>
+                                </div>
+                                
+                                <p class="text-xs text-center text-gray-500 mt-2">Scan to connect on WhatsApp</p>
+                            </div>
+                            
+                            <button onclick="connectWhatsApp()" class="w-full whatsapp-bg text-white py-3 rounded-lg font-semibold">
+                                <i class="fab fa-whatsapp mr-2"></i>Connect Now
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Actions -->
+                    <div class="bg-white rounded-xl shadow-sm p-6">
+                        <h3 class="text-lg font-bold text-gray-800 mb-4">Quick Actions</h3>
+                        
+                        <div class="space-y-3">
+                            <button onclick="setReminder()" class="w-full text-left p-3 hover:bg-gray-50 rounded-lg flex items-center space-x-3">
+                                <i class="fas fa-bell text-blue-600"></i>
+                                <span>Set Medicine Reminder</span>
+                            </button>
+                            
+                            <button onclick="shareReport()" class="w-full text-left p-3 hover:bg-gray-50 rounded-lg flex items-center space-x-3">
+                                <i class="fas fa-share-alt text-green-600"></i>
+                                <span>Share Health Report</span>
+                            </button>
+                            
+                            <button onclick="emergencyContact()" class="w-full text-left p-3 hover:bg-gray-50 rounded-lg flex items-center space-x-3">
+                                <i class="fas fa-ambulance text-red-600"></i>
+                                <span>Emergency Contact</span>
+                            </button>
+                            
+                            <button onclick="scheduleCall()" class="w-full text-left p-3 hover:bg-gray-50 rounded-lg flex items-center space-x-3">
+                                <i class="fas fa-phone-alt text-purple-600"></i>
+                                <span>Schedule Doctor Call</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Recent Conversations -->
+                    <div class="bg-white rounded-xl shadow-sm p-6">
+                        <h3 class="text-lg font-bold text-gray-800 mb-4">Recent Conversations</h3>
+                        
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg">
+                                <div class="flex items-center space-x-3">
+                                    <i class="fab fa-whatsapp text-green-600"></i>
+                                    <div>
+                                        <p class="text-sm font-medium">Medicine Reminder</p>
+                                        <p class="text-xs text-gray-500">2 hours ago</p>
+                                    </div>
+                                </div>
+                                <i class="fas fa-check-circle text-green-500"></i>
+                            </div>
+                            
+                            <div class="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg">
+                                <div class="flex items-center space-x-3">
+                                    <i class="fab fa-whatsapp text-green-600"></i>
+                                    <div>
+                                        <p class="text-sm font-medium">Diet Query</p>
+                                        <p class="text-xs text-gray-500">Yesterday</p>
+                                    </div>
+                                </div>
+                                <i class="fas fa-check-circle text-green-500"></i>
+                            </div>
+                            
+                            <div class="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg">
+                                <div class="flex items-center space-x-3">
+                                    <i class="fab fa-whatsapp text-green-600"></i>
+                                    <div>
+                                        <p class="text-sm font-medium">Risk Assessment</p>
+                                        <p class="text-xs text-gray-500">Feb 11, 2026</p>
+                                    </div>
+                                </div>
+                                <i class="fas fa-check-circle text-green-500"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Check login
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user) {
+            window.location.href = 'login.html';
+        } else {
+            document.getElementById('userName').textContent = user.firstName + ' ' + user.lastName;
+        }
+        
+        const chatMessages = document.getElementById('chatMessages');
+        
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (message) {
+                // Add user message
+                addMessage(message, 'user');
+                input.value = '';
+                
+                // Simulate bot response
+                setTimeout(() => {
+                    const botResponse = getBotResponse(message);
+                    addMessage(botResponse, 'bot');
+                }, 1000);
+            }
+        }
+        
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+        
+        function sendQuickReply(reply) {
+            addMessage(reply, 'user');
+            
+            setTimeout(() => {
+                const botResponse = getBotResponse(reply);
+                addMessage(botResponse, 'bot');
+            }, 1000);
+        }
+        
+        function addMessage(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chat-message message-${sender} p-4`;
+            
+            const time = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+            
+            messageDiv.innerHTML = `
+                <p>${text}</p>
+                <span class="text-xs text-${sender === 'bot' ? 'white/60' : 'gray-500'} mt-2 block">${time}</span>
+            `;
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        function getBotResponse(message) {
+            const lowerMsg = message.toLowerCase();
+            
+            if (lowerMsg.includes('risk') || lowerMsg.includes('level')) {
+                return "📊 Your current risk level is Mild (72%) based on your last assessment. Would you like to do a new assessment?";
+            }
+            else if (lowerMsg.includes('diet') || lowerMsg.includes('food') || lowerMsg.includes('eat')) {
+                return "🥗 Today's diet plan:\n• Breakfast: Oatmeal with berries\n• Lunch: Grilled chicken with vegetables\n• Dinner: Salmon with quinoa\n\nWould you like to see alternatives?";
+            }
+            else if (lowerMsg.includes('medicine') || lowerMsg.includes('reminder')) {
+                return "💊 Your medicine schedule:\n• 8:00 AM - Inhaler\n• 1:00 PM - Vitamin D\n• 8:00 PM - Inhaler\n\nShall I set a reminder?";
+            }
+            else if (lowerMsg.includes('breathe') || lowerMsg.includes('exercise')) {
+                return "🌬️ Breathing exercises for you:\n1. Pursed Lip Breathing (5 mins)\n2. Diaphragmatic Breathing (5 mins)\n\nWould you like a video tutorial?";
+            }
+            else if (lowerMsg.includes('doctor') || lowerMsg.includes('specialist')) {
+                return "👨‍⚕️ I found 5 pulmonologists near you. The nearest is Dr. Rakesh Gupta (1.2 km away). Would you like to book an appointment?";
+            }
+            else if (lowerMsg.includes('hello') || lowerMsg.includes('hi')) {
+                return "Hello! How can I assist you with your COPD management today?";
+            }
+            else {
+                return "I understand you're asking about " + message + ". Let me help you with that. Could you please provide more details?";
+            }
+        }
+        
+        function connectWhatsApp() {
+            const phoneNumber = "+14155238886"; // Twilio Sandbox number
+            const message = encodeURIComponent("join refer-evidence");
+            const url = `https://wa.me/${phoneNumber}?text=${message}`;
+            window.open(url, '_blank');
+        }
+        
+        function setReminder() {
+            alert('Medicine reminder has been set! You will receive notifications at 8:00 AM and 8:00 PM.');
+        }
+        
+        function shareReport() {
+            alert('Health report will be shared via WhatsApp. Please check your connected device.');
+        }
+        
+        function emergencyContact() {
+            if (confirm('This is for emergencies only. Do you want to call emergency services?')) {
+                window.location.href = 'tel:108';
+            }
+        }
+        
+        function scheduleCall() {
+            alert('Doctor call scheduled! You will receive a confirmation on WhatsApp.');
+        }
+        
+        function logout() {
+            localStorage.removeItem('user');
+            window.location.href = '../index.html';
+        }
+    </script>
+</body>
+</html>

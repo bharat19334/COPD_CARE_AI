@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> PulmoTech - Advanced Lung Health AI | Technovation 2026</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #7c3aed;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #1f2937;
+            --light: #f3f4f6;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .hover-scale {
+            transition: transform 0.3s ease;
+        }
+        
+        .hover-scale:hover {
+            transform: scale(1.05);
+        }
+        
+        .animate-pulse-slow {
+            animation: pulse 3s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-md shadow-sm">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 gradient-bg rounded-lg flex items-center justify-center">
+                        <i class="fas fa-lungs text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="text-xl font-bold text-gray-800">COPD Care</span>
+                        <span class="text-sm font-medium text-blue-600 block">AI</span>
+                    </div>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="text-gray-600 hover:text-blue-600 transition">Home</a>
+                    <a href="#features" class="text-gray-600 hover:text-blue-600 transition">Features</a>
+                    <a href="#about" class="text-gray-600 hover:text-blue-600 transition">About</a>
+                    <a href="#contact" class="text-gray-600 hover:text-blue-600 transition">Contact</a>
+                </div>
+                
+                <!-- Auth Buttons -->
+                <div class="flex items-center space-x-4">
+                    <a href="pages/login.html" class="text-gray-600 hover:text-blue-600 transition font-medium">
+                        <i class="fas fa-sign-in-alt mr-2"></i>Login
+                    </a>
+                    <a href="pages/signup.html" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
+                        Sign Up Free
+                    </a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden text-2xl" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div id="mobileMenu" class="hidden md:hidden mt-4 pb-4">
+                <a href="#home" class="block py-2 text-gray-600 hover:text-blue-600">Home</a>
+                <a href="#features" class="block py-2 text-gray-600 hover:text-blue-600">Features</a>
+                <a href="#about" class="block py-2 text-gray-600 hover:text-blue-600">About</a>
+                <a href="#contact" class="block py-2 text-gray-600 hover:text-blue-600">Contact</a>
+                <div class="pt-4 space-y-2">
+                    <a href="pages/login.html" class="block text-center text-gray-600 hover:text-blue-600">Login</a>
+                    <a href="pages/signup.html" class="block text-center bg-blue-600 text-white px-4 py-2 rounded-lg">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="pt-24 pb-16 min-h-screen flex items-center">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div data-aos="fade-right">
+                    <h1 class="text-5xl md:text-6xl font-bold text-white mb-6">
+                        PulmoTech<br>Predictive COPD Analytics Platform
+                    </h1>
+                    <p class="text-xl text-white/90 mb-8">
+                        Your Personal Respiratory Guardian: AI Prediction | Custom Diet | Instant Care.
+                    </p>
+                    
+                    <div class="flex flex-wrap gap-4">
+                        <a href="pages/signup.html" class="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:shadow-xl transition hover-scale">
+                            <i class="fas fa-rocket mr-2"></i>Get Started Free
+                        </a>
+                        <a href="#features" class="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white/10 transition">
+                            <i class="fas fa-play-circle mr-2"></i>Watch Demo
+                        </a>
+                    </div>
+                    
+                    <!-- Stats -->
+                    <div class="grid grid-cols-3 gap-6 mt-12">
+                        <div>
+                            <div class="text-3xl font-bold text-white">95%+</div>
+                            <div class="text-white/80">Accuracy</div>
+                        </div>
+                        <div>
+                            <div class="text-3xl font-bold text-white">24/7</div>
+                            <div class="text-white/80">AI Support</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div data-aos="fade-left" class="relative">
+                    <div class="bg-white/10 backdrop-blur-lg rounded-3xl p-8 border border-white/20">
+                        <img src="assets/images/dashboard-preview.png" alt="Dashboard Preview" class="rounded-2xl shadow-2xl">
+                        
+                        <!-- Floating Cards -->
+                        <div class="absolute -top-6 -left-6 bg-white rounded-xl p-4 shadow-xl animate-pulse-slow">
+                            <i class="fas fa-heartbeat text-red-500 text-2xl"></i>
+                            <div class="text-sm font-semibold mt-2">Mild Risk (72%)</div>
+                        </div>
+                        
+                        <div class="absolute -bottom-6 -right-6 bg-white rounded-xl p-4 shadow-xl animate-pulse-slow">
+                            <i class="fas fa-utensils text-green-500 text-2xl"></i>
+                            <div class="text-sm font-semibold mt-2">Diet Plan Ready</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center max-w-3xl mx-auto mb-16" data-aos="fade-up">
+                <span class="text-blue-600 font-semibold">FEATURES</span>
+                <h2 class="text-4xl font-bold text-gray-800 mt-2 mb-4">Complete COPD Care Platform</h2>
+                <p class="text-xl text-gray-600">Everything you need to manage your respiratory health in one place</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature 1: AI Prediction -->
+                <div class="bg-gray-50 rounded-2xl p-8 hover:shadow-xl transition" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-16 h-16 bg-blue-100 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-robot text-3xl text-blue-600"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">AI-Powered Prediction</h3>
+                    <p class="text-gray-600 mb-4">Advanced machine learning algorithm with 95% accuracy for COPD risk assessment.</p>
+                    <a href="pages/prediction.html" class="text-blue-600 font-semibold hover:text-blue-700">
+                        Try Now <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+                
+                <!-- Feature 2: Diet Plans -->
+                <div class="bg-gray-50 rounded-2xl p-8 hover:shadow-xl transition" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-16 h-16 bg-green-100 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-utensils text-3xl text-green-600"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">Personalized Diet Plans</h3>
+                    <p class="text-gray-600 mb-4">Customized meal plans based on your risk level with nutritional tracking.</p>
+                    <a href="pages/diet-plan.html" class="text-green-600 font-semibold hover:text-green-700">
+                        View Plans <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+                
+                <!-- Feature 3: Doctor Search -->
+                <div class="bg-gray-50 rounded-2xl p-8 hover:shadow-xl transition" data-aos="fade-up" data-aos-delay="300">
+                    <div class="w-16 h-16 bg-purple-100 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-map-marked-alt text-3xl text-purple-600"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">Find Pulmonologists</h3>
+                    <p class="text-gray-600 mb-4">Locate nearby specialists with real-time availability and instant booking.</p>
+                    <a href="pages/doctor-search.html" class="text-purple-600 font-semibold hover:text-purple-700">
+                        Search Now <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+                
+                <!-- Feature 4: WhatsApp Agent -->
+                <div class="bg-gray-50 rounded-2xl p-8 hover:shadow-xl transition" data-aos="fade-up" data-aos-delay="400">
+                    <div class="w-16 h-16 bg-green-100 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fab fa-whatsapp text-3xl text-green-600"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">24/7 WhatsApp Support</h3>
+                    <p class="text-gray-600 mb-4">Instant AI assistance and reminders directly on your WhatsApp.</p>
+                    <a href="pages/whatsapp-agent.html" class="text-green-600 font-semibold hover:text-green-700">
+                        Connect <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+                
+                <!-- Feature 5: Dashboard -->
+                <div class="bg-gray-50 rounded-2xl p-8 hover:shadow-xl transition" data-aos="fade-up" data-aos-delay="500">
+                    <div class="w-16 h-16 bg-orange-100 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-chart-line text-3xl text-orange-600"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">Smart Dashboard</h3>
+                    <p class="text-gray-600 mb-4">Track your progress, view reports, and manage everything in one place.</p>
+                    <a href="pages/dashboard.html" class="text-orange-600 font-semibold hover:text-orange-700">
+                        View Demo <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+                
+                <!-- Feature 6: Emergency -->
+                <div class="bg-gray-50 rounded-2xl p-8 hover:shadow-xl transition" data-aos="fade-up" data-aos-delay="600">
+                    <div class="w-16 h-16 bg-red-100 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-ambulance text-3xl text-red-600"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">Emergency Support</h3>
+                    <p class="text-gray-600 mb-4">Quick access to emergency services and immediate doctor contact.</p>
+                    <a href="#emergency" class="text-red-600 font-semibold hover:text-red-700">
+                        Learn More <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="py-20 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <div class="text-center max-w-3xl mx-auto mb-16" data-aos="fade-up">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">How It Works</h2>
+                <p class="text-xl text-gray-600">Three simple steps to better respiratory health</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="text-center" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-20 h-20 bg-blue-600 text-white rounded-full flex items-center justify-center text-3xl font-bold mx-auto mb-6">1</div>
+                    <h3 class="text-2xl font-bold mb-3">Sign Up & Login</h3>
+                    <p class="text-gray-600">Create your free account and complete your health profile</p>
+                </div>
+                
+                <div class="text-center" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-20 h-20 bg-blue-600 text-white rounded-full flex items-center justify-center text-3xl font-bold mx-auto mb-6">2</div>
+                    <h3 class="text-2xl font-bold mb-3">Get Risk Assessment</h3>
+                    <p class="text-gray-600">Fill in your details for accurate AI-powered prediction</p>
+                </div>
+                
+                <div class="text-center" data-aos="fade-up" data-aos-delay="300">
+                    <div class="w-20 h-20 bg-blue-600 text-white rounded-full flex items-center justify-center text-3xl font-bold mx-auto mb-6">3</div>
+                    <h3 class="text-2xl font-bold mb-3">Take Action</h3>
+                    <p class="text-gray-600">Get personalized diet plan and connect with specialists</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center max-w-3xl mx-auto mb-16" data-aos="fade-up">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">What Our Users Say</h2>
+                <p class="text-xl text-gray-600">Trusted by thousands of patients across India</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-gray-50 rounded-2xl p-8" data-aos="fade-up" data-aos-delay="100">
+                    <div class="flex text-yellow-400 mb-4">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="text-gray-700 mb-6">"The AI prediction was spot on! Helped me catch early symptoms and consult a doctor in time."</p>
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xl">RK</div>
+                        <div class="ml-4">
+                            <div class="font-semibold">Rakesh Kumar</div>
+                            <div class="text-sm text-gray-500">Kota, Rajasthan</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-50 rounded-2xl p-8" data-aos="fade-up" data-aos-delay="200">
+                    <div class="flex text-yellow-400 mb-4">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="text-gray-700 mb-6">"Found the best pulmonologist in my area through this platform. The diet plans are very helpful!"</p>
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center text-white font-bold text-xl">SV</div>
+                        <div class="ml-4">
+                            <div class="font-semibold">Suman Verma</div>
+                            <div class="text-sm text-gray-500">Jaipur</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-50 rounded-2xl p-8" data-aos="fade-up" data-aos-delay="300">
+                    <div class="flex text-yellow-400 mb-4">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="text-gray-700 mb-6">"WhatsApp agent is a lifesaver! Get instant reminders and tips for managing my condition."</p>
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center text-white font-bold text-xl">AP</div>
+                        <div class="ml-4">
+                            <div class="font-semibold">Amit Patel</div>
+                            <div class="text-sm text-gray-500">Delhi</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 gradient-bg">
+        <div class="container mx-auto px-6 text-center" data-aos="fade-up">
+            <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">Start Your Journey to Better Breathing</h2>
+            <p class="text-xl text-white/90 mb-8 max-w-2xl mx-auto">Join thousands of patients managing their COPD effectively with our AI-powered platform.</p>
+            <a href="pages/signup.html" class="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold text-lg hover:shadow-xl transition inline-flex items-center hover-scale">
+                <i class="fas fa-user-plus mr-2"></i>Create Free Account
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-10 h-10 gradient-bg rounded-lg flex items-center justify-center">
+                            <i class="fas fa-lungs text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <span class="text-xl font-bold">COPD Care</span>
+                            <span class="text-sm font-medium text-blue-400 block">AI</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-400">Intelligent COPD Management System for better respiratory health.</p>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="pages/dashboard.html" class="hover:text-white transition">Dashboard</a></li>
+                        <li><a href="pages/prediction.html" class="hover:text-white transition">COPD Prediction</a></li>
+                        <li><a href="pages/diet-plan.html" class="hover:text-white transition">My Diet Plan</a></li>
+                        <li><a href="pages/doctor-search.html" class="hover:text-white transition">Doctor Search</a></li>
+                        <li><a href="pages/whatsapp-agent.html" class="hover:text-white transition">WhatsApp Agent</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-4">Support</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition">Help Center</a></li>
+                        <li><a href="#" class="hover:text-white transition">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-white transition">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-white transition">Contact Us</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-4">Contact Info</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><i class="fas fa-envelope mr-2"></i> support@copdcareai.com</li>
+                        <li><i class="fas fa-phone mr-2"></i> +91 98765 43210</li>
+                        <li><i class="fas fa-map-marker-alt mr-2"></i> Kota, Rajasthan</li>
+                    </ul>
+                    
+                    <div class="flex space-x-4 mt-6">
+                        <a href="#" class="text-2xl text-gray-400 hover:text-white"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-2xl text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-2xl text-gray-400 hover:text-white"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="text-2xl text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2026 COPD Care AI. All rights reserved. Technovation 2026 Project.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+        
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+    </script>
+    <script src="js/main.js"></script>
+</body>
+</html>

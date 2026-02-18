@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - COPD Care AI</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .sidebar-item {
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-item:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .sidebar-item.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .setting-card {
+            transition: all 0.3s ease;
+        }
+        
+        .setting-card:hover {
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .toggle-switch {
+            position: relative;
+            width: 60px;
+            height: 30px;
+            background: #e5e7eb;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .toggle-switch.active {
+            background: #2563eb;
+        }
+        
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 26px;
+            height: 26px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .toggle-switch.active::after {
+            left: 32px;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    
+    <div class="flex h-screen">
+        <!-- Sidebar (same as before) -->
+        <div class="w-64 bg-white shadow-lg fixed h-full">
+            <div class="p-6">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3 mb-8">
+                    <div class="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-lungs text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="text-xl font-bold text-gray-800">COPD Care</span>
+                        <span class="text-xs font-medium text-blue-600 block">AI</span>
+                    </div>
+                </div>
+                
+                <!-- User Info -->
+                <div class="flex items-center space-x-3 mb-6 p-3 bg-gray-50 rounded-lg">
+                    <div class="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white font-bold">
+                        BG
+                    </div>
+                    <div>
+                        <div class="font-semibold" id="userName">Bharat Goswami</div>
+                        <div class="text-xs text-gray-500">Patient</div>
+                    </div>
+                </div>
+                
+                <!-- Navigation -->
+                <nav class="space-y-2">
+                    <a href="dashboard.html" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-600 hover:text-white">
+                        <i class="fas fa-home w-6"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="prediction.html" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-600 hover:text-white">
+                        <i class="fas fa-robot w-6"></i>
+                        <span>COPD Prediction</span>
+                    </a>
+                    <a href="diet-plan.html" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-600 hover:text-white">
+                        <i class="fas fa-utensils w-6"></i>
+                        <span>My Diet Plan</span>
+                    </a>
+                    <a href="doctor-search.html" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-600 hover:text-white">
+                        <i class="fas fa-map-marker-alt w-6"></i>
+                        <span>Doctor Search</span>
+                    </a>
+                    <a href="whatsapp-agent.html" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-600 hover:text-white">
+                        <i class="fab fa-whatsapp w-6"></i>
+                        <span>WhatsApp Agent</span>
+                    </a>
+                    <a href="settings.html" class="sidebar-item active flex items-center space-x-3 px-4 py-3 rounded-lg">
+                        <i class="fas fa-cog w-6"></i>
+                        <span>Settings</span>
+                    </a>
+                </nav>
+            </div>
+            
+            <!-- Logout -->
+            <div class="absolute bottom-0 w-64 p-6 border-t">
+                <button onclick="logout()" class="flex items-center space-x-3 text-gray-600 hover:text-red-600 w-full">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="flex-1 ml-64 p-8 overflow-y-auto">
+            <!-- Header -->
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">Settings</h1>
+                <p class="text-gray-600">Manage your account preferences and notifications</p>
+            </div>
+            
+            <!-- Settings Grid -->
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Left Column - Profile -->
+                <div class="md:col-span-2 space-y-6">
+                    <!-- Profile Settings -->
+                    <div class="bg-white rounded-xl shadow-sm p-6 setting-card">
+                        <h2 class="text-xl font-bold text-gray-800 mb-6">Profile Information</h2>
+                        
+                        <div class="flex items-center space-x-6 mb-8">
+                            <div class="w-24 h-24 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white text-3xl font-bold">
+                                BG
+                            </div>
+                            <div>
+                                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                                    <i class="fas fa-camera mr-2"></i>Change Photo
+                                </button>
+                                <p class="text-sm text-gray-500 mt-2">JPG, PNG or GIF. Max 2MB</p>
+                            </div>
+                        </div>
+                        
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">First Name</label>
+                                <input type="text" id="firstName" value="Bharat" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
+                                <input type="text" id="lastName" value="Goswami" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                                <input type="email" id="email" value="bharat@example.com" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                                <input type="tel" id="phone" value="+91 98765 43210" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Date of Birth</label>
+                                <input type="date" id="dob" value="1985-06-15" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Gender</label>
+                                <select id="gender" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                    <option value="male" selected>Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">City</label>
+                                <input type="text" id="city" value="Kota" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">State</label>
+                                <input type="text" id="state" value="Rajasthan" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-end mt-6">
+                            <button onclick="saveProfile()" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">
+                                <i class="fas fa-save mr-2"></i>Save Changes
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Notification Settings -->
+                    <div class="bg-white rounded-xl shadow-sm p-6 setting-card">
+                        <h2 class="text-xl font-bold text-gray-800 mb-6">Notification Preferences</h2>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                                <div>
+                                    <h3 class="font-semibold">Medicine Reminders</h3>
+                                    <p class="text-sm text-gray-600">Get reminders for your daily medications</p>
+                                </div>
+                                <div class="toggle-switch active" onclick="toggleNotification(this, 'medicine')"></div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                                <div>
+                                    <h3 class="font-semibold">Diet Plan Notifications</h3>
+                                    <p class="text-sm text-gray-600">Daily meal reminders and diet tips</p>
+                                </div>
+                                <div class="toggle-switch active" onclick="toggleNotification(this, 'diet')"></div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                                <div>
+                                    <h3 class="font-semibold">Appointment Reminders</h3>
+                                    <p class="text-sm text-gray-600">Get notified about upcoming appointments</p>
+                                </div>
+                                <div class="toggle-switch active" onclick="toggleNotification(this, 'appointment')"></div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                                <div>
+                                    <h3 class="font-semibold">Health Tips & Updates</h3>
+                                    <p class="text-sm text-gray-600">Weekly health tips and COPD updates</p>
+                                </div>
+                                <div class="toggle-switch" onclick="toggleNotification(this, 'tips')"></div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                                <div>
+                                    <h3 class="font-semibold">Emergency Alerts</h3>
+                                    <p class="text-sm text-gray-600">Critical alerts and emergency notifications</p>
+                                </div>
+                                <div class="toggle-switch active" onclick="toggleNotification(this, 'emergency')"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right Column -->
+                <div class="space-y-6">
+                    <!-- Account Security -->
+                    <div class="bg-white rounded-xl shadow-sm p-6 setting-card">
+                        <h2 class="text-xl font-bold text-gray-800 mb-6">Account Security</h2>
+                        
+                        <div class="space-y-4">
+                            <button class="w-full text-left p-4 hover:bg-gray-50 rounded-lg">
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-key text-blue-600"></i>
+                                    <div>
+                                        <h3 class="font-semibold">Change Password</h3>
+                                        <p class="text-sm text-gray-600">Last changed 30 days ago</p>
+                                    </div>
+                                </div>
+                            </button>
+                            
+                            <button class="w-full text-left p-4 hover:bg-gray-50 rounded-lg">
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-mobile-alt text-green-600"></i>
+                                    <div>
+                                        <h3 class="font-semibold">Two-Factor Authentication</h3>
+                                        <p class="text-sm text-gray-600">Enhance account security</p>
+                                    </div>
+                                </div>
+                            </button>
+                            
+                            <button class="w-full text-left p-4 hover:bg-gray-50 rounded-lg">
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-history text-purple-600"></i>
+                                    <div>
+                                        <h3 class="font-semibold">Login History</h3>
+                                        <p class="text-sm text-gray-600">View recent login activity</p>
+                                    </div>
+                                </div>
+                            </button>
+                            
+                            <button class="w-full text-left p-4 hover:bg-gray-50 rounded-lg">
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-shield-alt text-red-600"></i>
+                                    <div>
+                                        <h3 class="font-semibold">Privacy Settings</h3>
+                                        <p class="text-sm text-gray-600">Manage data sharing</p>
+                                    </div>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Connected Accounts -->
+                    <div class="bg-white rounded-xl shadow-sm p-6 setting-card">
+                        <h2 class="text-xl font-bold text-gray-800 mb-6">Connected Accounts</h2>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg">
+                                <div class="flex items-center space-x-3">
+                                    <i class="fab fa-whatsapp text-2xl text-green-600"></i>
+                                    <div>
+                                        <p class="font-semibold">WhatsApp</p>
+                                        <p class="text-sm text-gray-500">Connected</p>
+                                    </div>
+                                </div>
+                                <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">Active</span>
+                            </div>
+                            
+                            <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg">
+                                <div class="flex items-center space-x-3">
+                                    <i class="fab fa-google text-2xl text-blue-600"></i>
+                                    <div>
+                                        <p class="font-semibold">Google</p>
+                                        <p class="text-sm text-gray-500">Not connected</p>
+                                    </div>
+                                </div>
+                                <button class="text-sm text-blue-600">Connect</button>
+                            </div>
+                            
+                            <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg">
+                                <div class="flex items-center space-x-3">
+                                    <i class="fab fa-facebook text-2xl text-blue-800"></i>
+                                    <div>
+                                        <p class="font-semibold">Facebook</p>
+                                        <p class="text-sm text-gray-500">Not connected</p>
+                                    </div>
+                                </div>
+                                <button class="text-sm text-blue-600">Connect</button>
+                            </div>
+                            
+                            <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg">
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-envelope text-2xl text-gray-600"></i>
+                                    <div>
+                                        <p class="font-semibold">Email</p>
+                                        <p class="text-sm text-gray-500">bharat@example.com</p>
+                                    </div>
+                                </div>
+                                <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">Verified</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Danger Zone -->
+                    <div class="bg-white rounded-xl shadow-sm p-6 border border-red-200">
+                        <h2 class="text-xl font-bold text-red-600 mb-6">Danger Zone</h2>
+                        
+                        <div class="space-y-4">
+                            <button onclick="exportData()" class="w-full text-left p-3 hover:bg-gray-50 rounded-lg">
+                                <i class="fas fa-download text-gray-600 mr-3"></i>
+                                <span>Export My Data</span>
+                            </button>
+                            
+                            <button onclick="deactivateAccount()" class="w-full text-left p-3 hover:bg-gray-50 rounded-lg">
+                                <i class="fas fa-pause-circle text-yellow-600 mr-3"></i>
+                                <span>Deactivate Account</span>
+                            </button>
+                            
+                            <button onclick="deleteAccount()" class="w-full text-left p-3 hover:bg-red-50 rounded-lg">
+                                <i class="fas fa-trash-alt text-red-600 mr-3"></i>
+                                <span class="text-red-600">Delete Account</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Check login
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user) {
+            window.location.href = 'login.html';
+        } else {
+            document.getElementById('userName').textContent = user.firstName + ' ' + user.lastName;
+            
+            // Populate form with user data
+            if (user.firstName) document.getElementById('firstName').value = user.firstName;
+            if (user.lastName) document.getElementById('lastName').value = user.lastName;
+            if (user.email) document.getElementById('email').value = user.email;
+            if (user.phone) document.getElementById('phone').value = user.phone;
+            if (user.city) document.getElementById('city').value = user.city;
+            if (user.state) document.getElementById('state').value = user.state;
+        }
+        
+        function toggleNotification(element, type) {
+            element.classList.toggle('active');
+            const isActive = element.classList.contains('active');
+            
+            let message = '';
+            switch(type) {
+                case 'medicine':
+                    message = isActive ? 'Medicine reminders enabled' : 'Medicine reminders disabled';
+                    break;
+                case 'diet':
+                    message = isActive ? 'Diet plan notifications enabled' : 'Diet plan notifications disabled';
+                    break;
+                case 'appointment':
+                    message = isActive ? 'Appointment reminders enabled' : 'Appointment reminders disabled';
+                    break;
+                case 'tips':
+                    message = isActive ? 'Health tips enabled' : 'Health tips disabled';
+                    break;
+                case 'emergency':
+                    message = isActive ? 'Emergency alerts enabled' : 'Emergency alerts disabled';
+                    break;
+            }
+            
+            alert(message);
+        }
+        
+        function saveProfile() {
+            const updatedUser = {
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                dob: document.getElementById('dob').value,
+                gender: document.getElementById('gender').value,
+                city: document.getElementById('city').value,
+                state: document.getElementById('state').value,
+                isLoggedIn: true
+            };
+            
+            localStorage.setItem('user', JSON.stringify(updatedUser));
+            alert('Profile updated successfully!');
+        }
+        
+        function exportData() {
+            const userData = {
+                profile: JSON.parse(localStorage.getItem('user')),
+                predictions: [],
+                dietHistory: []
+            };
+            
+            const dataStr = JSON.stringify(userData, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = 'copd-care-data.json';
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+            
+            alert('Your data has been exported!');
+        }
+        
+        function deactivateAccount() {
+            if (confirm('Are you sure you want to deactivate your account? You can reactivate anytime by logging in.')) {
+                localStorage.removeItem('user');
+                alert('Account deactivated successfully');
+                window.location.href = '../index.html';
+            }
+        }
+        
+        function deleteAccount() {
+            if (confirm('WARNING: This will permanently delete all your data. This action cannot be undone. Are you absolutely sure?')) {
+                localStorage.removeItem('user');
+                alert('Account deleted permanently');
+                window.location.href = '../index.html';
+            }
+        }
+        
+        function logout() {
+            localStorage.removeItem('user');
+            window.location.href = '../index.html';
+        }
+    </script>
+</body>
+</html>

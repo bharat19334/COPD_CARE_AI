@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - COPD Care AI</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .sidebar-item {
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-item:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .sidebar-item.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .weather-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <div class="w-64 bg-white shadow-lg fixed h-full">
+            <div class="p-6">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3 mb-8">
+                    <div class="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-lungs text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="text-xl font-bold text-gray-800">COPD Care</span>
+                        <span class="text-xs font-medium text-blue-600 block">AI</span>
+                    </div>
+                </div>
+                
+                <!-- User Info -->
+                <div class="flex items-center space-x-3 mb-6 p-3 bg-gray-50 rounded-lg">
+                    <div class="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white font-bold">
+                        BG
+                    </div>
+                    <div>
+                        <div class="font-semibold" id="userName">Bharat Goswami</div>
+                        <div class="text-xs text-gray-500">Patient</div>
+                    </div>
+                </div>
+                
+                <!-- Navigation -->
+                <nav class="space-y-2">
+                    <a href="dashboard.html" class="sidebar-item active flex items-center space-x-3 px-4 py-3 rounded-lg">
+                        <i class="fas fa-home w-6"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="prediction.html" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-600 hover:text-white">
+                        <i class="fas fa-robot w-6"></i>
+                        <span>COPD Prediction</span>
+                    </a>
+                    <a href="diet-plan.html" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-600 hover:text-white">
+                        <i class="fas fa-utensils w-6"></i>
+                        <span>My Diet Plan</span>
+                    </a>
+                    <a href="doctor-search.html" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-600 hover:text-white">
+                        <i class="fas fa-map-marker-alt w-6"></i>
+                        <span>Doctor Search</span>
+                    </a>
+                    <a href="whatsapp-agent.html" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-600 hover:text-white">
+                        <i class="fab fa-whatsapp w-6"></i>
+                        <span>WhatsApp Agent</span>
+                    </a>
+                    <a href="settings.html" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-600 hover:text-white">
+                        <i class="fas fa-cog w-6"></i>
+                        <span>Settings</span>
+                    </a>
+                </nav>
+            </div>
+            
+            <!-- Logout -->
+            <div class="absolute bottom-0 w-64 p-6 border-t">
+                <button onclick="logout()" class="flex items-center space-x-3 text-gray-600 hover:text-red-600 w-full">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="flex-1 ml-64 p-8">
+            <!-- Top Bar -->
+            <div class="flex justify-between items-center mb-8">
+                <h1 class="text-3xl font-bold text-gray-800">Welcome back, <span id="welcomeName">Bharat</span></h1>
+                
+                <div class="flex items-center space-x-4">
+                    <!-- Weather -->
+                    <div class="weather-card text-white px-4 py-2 rounded-lg flex items-center space-x-3">
+                        <i class="fas fa-sun text-2xl"></i>
+                        <div>
+                            <div class="text-sm">Kota, Rajasthan</div>
+                            <div class="font-semibold">25°C Sunny</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Notifications -->
+                    <button class="relative">
+                        <i class="fas fa-bell text-2xl text-gray-600"></i>
+                        <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-xs text-white flex items-center justify-center">3</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded-xl p-6 shadow-sm">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-heartbeat text-2xl text-blue-600"></i>
+                        </div>
+                        <span class="text-sm text-gray-500">Last updated 2 days ago</span>
+                    </div>
+                    <div class="text-2xl font-bold text-gray-800">Mild Risk</div>
+                    <div class="text-sm text-gray-500">72% Risk Level</div>
+                    <a href="prediction.html" class="text-blue-600 text-sm font-semibold mt-2 inline-block">View Report →</a>
+                </div>
+                
+                <div class="bg-white rounded-xl p-6 shadow-sm">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-utensils text-2xl text-green-600"></i>
+                        </div>
+                    </div>
+                    <div class="text-2xl font-bold text-gray-800">Today's Diet</div>
+                    <div class="text-sm text-gray-500">Breakfast: Oatmeal with berries</div>
+                    <a href="diet-plan.html" class="text-green-600 text-sm font-semibold mt-2 inline-block">View Full Plan →</a>
+                </div>
+                
+                <div class="bg-white rounded-xl p-6 shadow-sm">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-user-md text-2xl text-purple-600"></i>
+                        </div>
+                    </div>
+                    <div class="text-2xl font-bold text-gray-800">12 Doctors</div>
+                    <div class="text-sm text-gray-500">Available in your area</div>
+                    <a href="doctor-search.html" class="text-purple-600 text-sm font-semibold mt-2 inline-block">Find Now →</a>
+                </div>
+                
+                <div class="bg-white rounded-xl p-6 shadow-sm">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                            <i class="fab fa-whatsapp text-2xl text-yellow-600"></i>
+                        </div>
+                    </div>
+                    <div class="text-2xl font-bold text-gray-800">AI Agent</div>
+                    <div class="text-sm text-gray-500">24/7 Support Available</div>
+                    <a href="whatsapp-agent.html" class="text-yellow-600 text-sm font-semibold mt-2 inline-block">Chat Now →</a>
+                </div>
+            </div>
+            
+            <!-- Main Dashboard Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Left Column -->
+                <div class="lg:col-span-2 space-y-8">
+                    <!-- Recent Prediction -->
+                    <div class="bg-white rounded-xl p-6 shadow-sm">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-xl font-bold text-gray-800">Recent Prediction Status</h2>
+                            <span class="text-sm text-gray-500">2 days ago</span>
+                        </div>
+                        
+                        <div class="flex items-center justify-between p-4 bg-blue-50 rounded-lg">
+                            <div>
+                                <div class="text-sm text-gray-600">Result</div>
+                                <div class="text-2xl font-bold text-blue-600">Mild Risk (72%)</div>
+                            </div>
+                            <a href="prediction.html" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+                                View Detailed Report
+                            </a>
+                        </div>
+                        
+                        <div class="mt-4 text-sm text-gray-600">
+                            <i class="fas fa-info-circle text-blue-600 mr-2"></i>
+                            Recommendation: Monitor symptoms, follow diet plan
+                        </div>
+                    </div>
+                    
+                    <!-- Today's Diet Plan Detail -->
+                    <div class="bg-white rounded-xl p-6 shadow-sm">
+                        <h2 class="text-xl font-bold text-gray-800 mb-6">Today's Diet Plan</h2>
+                        
+                        <div class="grid md:grid-cols-3 gap-4">
+                            <div class="p-4 bg-orange-50 rounded-lg">
+                                <div class="flex items-center space-x-2 mb-3">
+                                    <i class="fas fa-sun text-orange-500"></i>
+                                    <span class="font-semibold">Breakfast</span>
+                                    <span class="text-xs text-gray-500 ml-auto">8:00 AM</span>
+                                </div>
+                                <p class="text-sm text-gray-700">Oatmeal with berries & almonds</p>
+                                <div class="mt-2 text-xs text-gray-500">420 kcal</div>
+                            </div>
+                            
+                            <div class="p-4 bg-green-50 rounded-lg">
+                                <div class="flex items-center space-x-2 mb-3">
+                                    <i class="fas fa-cloud-sun text-green-500"></i>
+                                    <span class="font-semibold">Lunch</span>
+                                    <span class="text-xs text-gray-500 ml-auto">1:00 PM</span>
+                                </div>
+                                <p class="text-sm text-gray-700">Grilled chicken with vegetables</p>
+                                <div class="mt-2 text-xs text-gray-500">550 kcal</div>
+                            </div>
+                            
+                            <div class="p-4 bg-blue-50 rounded-lg">
+                                <div class="flex items-center space-x-2 mb-3">
+                                    <i class="fas fa-moon text-blue-500"></i>
+                                    <span class="font-semibold">Dinner</span>
+                                    <span class="text-xs text-gray-500 ml-auto">7:00 PM</span>
+                                </div>
+                                <p class="text-sm text-gray-700">Salmon with quinoa & broccoli</p>
+                                <div class="mt-2 text-xs text-gray-500">480 kcal</div>
+                            </div>
+                        </div>
+                        
+                        <a href="diet-plan.html" class="text-blue-600 text-sm font-semibold mt-4 inline-block">
+                            View Complete Diet Chart →
+                        </a>
+                    </div>
+                    
+                    <!-- Breathing Exercises -->
+                    <!-- Breathing Exercises -->
+                    <h2 class="text-xl font-bold text-gray-800 mb-6">Breathing Exercises</h2>
+                    <div class="bg-white rounded-xl p-6 shadow-sm">
+    
+                        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                            <div class="flex items-center space-x-4">
+                                <i class="fas fa-lungs text-2xl text-blue-600"></i>
+                                <div>
+                                    <h3 class="font-semibold">Pursed Lip Breathing</h3>
+                                    <p class="text-sm text-gray-600">Slowly through pursed lips</p>
+                                </div>
+                            </div>
+                            <a href="https://youtu.be/2utkaRhutJY" 
+                            target="_blank" 
+                            class="text-blue-600 hover:text-blue-700">
+                            <i class="fas fa-play-circle text-2xl"></i>
+                        </a>
+                    </div>
+                    
+                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                        <div class="flex items-center space-x-4">
+                            <i class="fas fa-lungs text-2xl text-green-600"></i>
+                            <div>
+                                <h3 class="font-semibold">Diaphragmatic Breathing</h3>
+                                <p class="text-sm text-gray-600">Breathe deeply using your diaphragm</p>
+                            </div>
+                        </div>
+                        <a href="https://youtu.be/kgTL5G1ibIo" 
+                        target="_blank" 
+                        class="text-green-600 hover:text-green-700">
+                        <i class="fas fa-play-circle text-2xl"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <a href="https://www.youtube.com/results?search_query=breathing+exercises" 
+            target="_blank" 
+            class="text-blue-600 text-sm font-semibold mt-4 inline-block">
+            Watch Tutorials →
+        </a>
+    </div>
+    
+    <div class="space-y-4">
+                <!-- Right Column -->
+                <div class="space-y-8">
+                    <!-- Local Doctors -->
+                    <div class="bg-white rounded-xl p-6 shadow-sm">
+                        <h2 class="text-xl font-bold text-gray-800 mb-6">Local Doctors in Kota</h2>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-user-md text-blue-600"></i>
+                                    </div>
+                                    <div>
+                                        <div class="font-semibold">Dr. Bharat Goswami</div>
+                                        <div class="text-xs text-gray-500">Pulmonologist</div>
+                                    </div>
+                                </div>
+                                <button class="text-sm bg-blue-600 text-white px-3 py-1 rounded-lg hover:bg-blue-700">
+                                    Book
+                                </button>
+                            </div>
+                            
+                            <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-user-md text-green-600"></i>
+                                    </div>
+                                    <div>
+                                        <div class="font-semibold">Dr. Khaka Whikantur</div>
+                                        <div class="text-xs text-gray-500">Chest Physician</div>
+                                    </div>
+                                </div>
+                                <button class="text-sm bg-blue-600 text-white px-3 py-1 rounded-lg hover:bg-blue-700">
+                                    Book
+                                </button>
+                            </div>
+                            
+                            <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-user-md text-purple-600"></i>
+                                    </div>
+                                    <div>
+                                        <div class="font-semibold">Dr. Aurat Goswami</div>
+                                        <div class="text-xs text-gray-500">Respiratory Specialist</div>
+                                    </div>
+                                </div>
+                                <button class="text-sm bg-blue-600 text-white px-3 py-1 rounded-lg hover:bg-blue-700">
+                                    Book
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <a href="doctor-search.html" class="text-blue-600 text-sm font-semibold mt-4 inline-block">
+                            View All Doctors →
+                        </a>
+                    </div>
+                    
+                    <!-- AI Agent Chat -->
+                    <div class="bg-white rounded-xl p-6 shadow-sm">
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="text-xl font-bold text-gray-800">AI Agent Chat</h2>
+                            <span class="bg-green-500 text-white text-xs px-2 py-1 rounded-full">Online</span>
+                        </div>
+                        
+                        <div class="bg-gray-50 rounded-lg p-4 h-40 overflow-y-auto mb-4">
+                            <div class="mb-3">
+                                <div class="bg-blue-100 text-blue-800 p-3 rounded-lg inline-block max-w-xs">
+                                    Hi Bharat, your risk level is Mild (72%)
+                                </div>
+                                <div class="text-xs text-gray-500 mt-1">AI Agent • Just now</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex space-x-2">
+                            <input type="text" placeholder="Type your message..." 
+                                   class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Emergency Section -->
+                    <div class="bg-red-50 rounded-xl p-6 border border-red-200">
+                        <h3 class="font-bold text-red-800 mb-3">Emergency Symptoms</h3>
+                        <ul class="space-y-2 text-sm text-red-700 mb-4">
+                            <li><i class="fas fa-exclamation-circle mr-2"></i>Severe shortness of breath</li>
+                            <li><i class="fas fa-exclamation-circle mr-2"></i>Blue lips or fingernails</li>
+                            <li><i class="fas fa-exclamation-circle mr-2"></i>Rapid heartbeat</li>
+                        </ul>
+                        
+                        <div class="grid grid-cols-2 gap-3">
+                            <button onclick="confirmEmergencyCall()" class="bg-red-600 text-white text-center py-2 rounded-lg hover:bg-red-700">
+                                <i class="fas fa-phone-alt mr-2"></i>Call Emergency
+                            </button>
+                            <a href="doctor-search.html" class="bg-blue-600 text-white text-center py-2 rounded-lg hover:bg-blue-700">
+                                <i class="fas fa-user-md mr-2"></i>Contact Doctor
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Load user data
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user) {
+            window.location.href = 'login.html';
+        } else {
+            document.getElementById('userName').textContent = user.firstName + ' ' + user.lastName;
+            document.getElementById('welcomeName').textContent = user.firstName;
+        }
+        
+        function logout() {
+            localStorage.removeItem('user');
+            window.location.href = '../index.html';
+        }
+        const emergencyNumber = "102";  // या "102" एम्बुलेंस के लिए
+
+        function confirmEmergencyCall() {
+            if (confirm(`Are you sure you want to call emergency services (${emergencyNumber})?`)) {
+                window.location.href = `tel:${emergencyNumber}`;
+            }
+        }
+    </script>
+</body>
+</html>

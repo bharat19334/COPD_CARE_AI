@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - COPD Care AI</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        body {
+            position: relative;
+            background-image: url('../assets/images/login-bg.jpg.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 0;
+        }
+        .w-full { position: relative; z-index: 2; }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center md:justify-start md:pl-16 lg:pl-24 p-4">
+    
+    <div class="w-full max-w-md">
+        <!-- Logo -->
+        <div class="text-center mb-8">
+            <a href="../index.html" class="inline-flex items-center space-x-3">
+                <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center">
+                    <i class="fas fa-lungs text-blue-600 text-2xl"></i>
+                </div>
+                <div class="text-left">
+                    <span class="text-2xl font-bold text-white">COPD Care</span>
+                    <span class="text-sm font-medium text-yellow-300 block">AI</span>
+                </div>
+            </a>
+        </div>
+        
+        <!-- Login Card -->
+        <div class="glass-card rounded-2xl shadow-2xl p-8">
+            <h2 class="text-3xl font-bold text-gray-800 mb-2">Welcome Back</h2>
+            <p class="text-gray-600 mb-8">Login to access your COPD management dashboard</p>
+            
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <!-- Email -->
+                <div class="mb-6">
+                    <label class="block text-gray-700 font-medium mb-2">Email Address</label>
+                    <div class="relative">
+                        <i class="fas fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        <input type="email" id="email" required 
+                               class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                               placeholder="Enter your email">
+                    </div>
+                </div>
+                
+                <!-- Password -->
+                <div class="mb-6">
+                    <label class="block text-gray-700 font-medium mb-2">Password</label>
+                    <div class="relative">
+                        <i class="fas fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        <input type="password" id="password" required 
+                               class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                               placeholder="Enter your password">
+                        <button type="button" onclick="togglePassword()" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
+                            <i class="fas fa-eye" id="toggleIcon"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Remember & Forgot -->
+                <div class="flex items-center justify-between mb-6">
+                    <label class="flex items-center">
+                        <input type="checkbox" class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500">
+                        <span class="ml-2 text-gray-600">Remember me</span>
+                    </label>
+                    <a href="#" class="text-blue-600 hover:text-blue-700 font-medium">Forgot Password?</a>
+                </div>
+                
+                <!-- Login Button -->
+                <button type="submit" 
+                        class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition flex items-center justify-center">
+                    <i class="fas fa-sign-in-alt mr-2"></i>
+                    Login to Dashboard
+                </button>
+                
+                <!-- Demo Credentials -->
+                <div class="mt-4 p-4 bg-blue-50 rounded-lg">
+                    <p class="text-sm text-blue-800 font-medium mb-2">Demo Credentials:</p>
+                    <p class="text-sm text-blue-600">Email: bharat@example.com</p>
+                    <p class="text-sm text-blue-600">Password: patient123</p>
+                    <button type="button" onclick="fillDemoCredentials()" class="text-xs text-blue-700 underline">Fill Demo</button>
+                </div>
+                
+                <!-- Sign Up Link -->
+                <p class="text-center mt-6 text-gray-600">
+                    Don't have an account? 
+                    <a href="signup.html" class="text-blue-600 font-semibold hover:text-blue-700">Sign Up Free</a>
+                </p>
+            </form>
+            
+            <!-- Social Login -->
+            <div class="mt-6">
+                <div class="relative">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-gray-300"></div>
+                    </div>
+                    <div class="relative flex justify-center text-sm">
+                        <span class="px-2 bg-white text-gray-500">Or continue with</span>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4 mt-6">   
+                    <button onclick="handleGoogleLogin()" class="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
+                        <i class="fab fa-google text-red-500 mr-2"></i> Google
+                    </button>
+                    <button onclick="handleFacebookLogin()" class="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
+                        <i class="fab fa-facebook text-blue-600 mr-2"></i> Facebook
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Firebase SDKs (compat version) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        // 🔥 Firebase configuration (aapki apni)
+        const firebaseConfig = {
+            apiKey: "AIzaSyAKID2GWHPY0zJONKuAd3ixAmXw4rc-jXY",
+            authDomain: "copd-care.firebaseapp.com",
+            projectId: "copd-care",
+            storageBucket: "copd-care.firebasestorage.app",
+            messagingSenderId: "761280732177",
+            appId: "1:761280732177:web:815ec4e7968f7969fb65b0",
+            measurementId: "G-2VHWQ3FKTR"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Toggle password visibility
+        function togglePassword() {
+            const password = document.getElementById('password');
+            const icon = document.getElementById('toggleIcon');
+            if (password.type === 'password') {
+                password.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                password.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        // Handle login with email/password
+        function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            auth.signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Login successful
+                    window.location.href = 'dashboard.html';
+                })
+                .catch((error) => {
+                    alert('Login failed: ' + error.message);
+                });
+        }
+
+        // Fill demo credentials (optional)
+        function fillDemoCredentials() {
+            document.getElementById('email').value = 'bharat@example.com';
+            document.getElementById('password').value = 'patient123';
+        }
+
+        // Google Login
+        function handleGoogleLogin() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider)
+                .then((result) => {
+                    // Agar naya user hai to Firestore me basic info save karein
+                    const user = result.user;
+                    return db.collection('users').doc(user.uid).set({
+                        firstName: user.displayName ? user.displayName.split(' ')[0] : '',
+                        lastName: user.displayName ? user.displayName.split(' ').slice(1).join(' ') : '',
+                        email: user.email,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    }, { merge: true });
+                })
+                .then(() => {
+                    window.location.href = 'dashboard.html';
+                })
+                .catch((error) => {
+                    alert('Google login failed: ' + error.message);
+                });
+        }
+
+        // Facebook Login (agar enable kiya ho)
+        function handleFacebookLogin() {
+            const provider = new firebase.auth.FacebookAuthProvider();
+            auth.signInWithPopup(provider)
+                .then((result) => {
+                    const user = result.user;
+                    return db.collection('users').doc(user.uid).set({
+                        firstName: user.displayName ? user.displayName.split(' ')[0] : '',
+                        lastName: user.displayName ? user.displayName.split(' ').slice(1).join(' ') : '',
+                        email: user.email,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    }, { merge: true });
+                })
+                .then(() => {
+                    window.location.href = 'dashboard.html';
+                })
+                .catch((error) => {
+                    alert('Facebook login failed: ' + error.message);
+                });
+        }
+
+        // Agar user already logged in hai to direct dashboard bhej do
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                window.location.href = 'dashboard.html';
+            }
+        });
+    </script>
+</body>
+</html>

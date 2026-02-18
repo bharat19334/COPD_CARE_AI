@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>13-Parameter COPD Prediction - COPD Care AI</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        /* ==================== CUSTOM STYLES ==================== */
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        /* Sidebar Styles */
+        .sidebar-item {
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-item:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .sidebar-item.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        /* Progress Steps */
+        .progress-step {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #6b7280;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .progress-step.active {
+            background: #2563eb;
+            color: white;
+            transform: scale(1.1);
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
+        }
+        
+        .progress-step.completed {
+            background: #10b981;
+            color: white;
+        }
+        
+        /* Progress Line */
+        .progress-line {
+            flex: 1;
+            height: 4px;
+            background: #e5e7eb;
+            margin: 0 10px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .progress-line.filled {
+            background: linear-gradient(90deg, #10b981, #2563eb);
+        }
+        
+        /* Form Cards */
+        .form-section {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .form-section:hover {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* mMRC Scale Cards */
+        .mmrc-card {
+            background: #f9fafb;
+            border: 2px solid #e5e7eb;
+            border-radius: 1rem;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .mmrc-card:hover {
+            border-color: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+        }
+        
+        .mmrc-card.selected {
+            border-color: #2563eb;
+            background: #eff6ff;
+        }
+        
+        .mmrc-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2563eb;
+            margin-bottom: 0.5rem;
+        }
+        
+        .mmrc-label {
+            font-size: 0.875rem;
+            color: #4b5563;
+        }
+        
+        /* Toggle Switch for Yes/No */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #e5e7eb;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .toggle-slider {
+            background-color: #2563eb;
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(30px);
+        }
+        
+        /* Input Styles */
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .input-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+        
+        .input-label i {
+            color: #2563eb;
+            margin-right: 0.5rem;
+        }
+        
+        .input-field {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.75rem;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+        
+        .input-field:hover {
+            border-color: #9ca3af;
+        }
+        
+        .input-help {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.25rem;
+        }
+        
+        /* Info Box */
+        .info-box {
+            background: #eff6ff;
+            border-left: 4px solid #2563eb;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .info-box i {
+            color: #2563eb;
+            margin-right: 0.75rem;
+        }
+        
+        /* Result Cards */
+        .result-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .risk-high {
+            background: linear-gradient(135deg, #ef4444, #f87171);
+        }
+        
+        .risk-medium {
+            background: linear-gradient(135deg, #f59e0b, #fbbf24);
+        }
+        
+        .risk-low {
+            background: linear-gradient(135deg, #10b981, #34d399);
+        }
+        
+        /* Animation */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .step {
+            animation: slideIn 0.5s ease;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .mmrc-card {
+                margin-bottom: 1rem;
+            }
+            
+            .progress-step {
+                width: 35px;
+                height: 35px;
+                font-size: 0.875rem;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    
+    <div class="flex h-screen">
+        <!-- ==================== SIDEBAR ==================== -->
+        <div class="w-64 bg-white shadow-lg fixed h-full overflow-y-auto">
+            <div class="p-6">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3 mb-8">
+                    <div class="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-lungs text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="text-xl font-bold text-gray-800">COPD Care</span>
+                        <span class="text-xs font-medium text-blue-600 block">AI</span>
+                    </div>
+                </div>
+                
+                <!-- User Info -->
+                <div class="flex items-center space-x-3 mb-6 p-3 bg-gray-50 rounded-lg">
+                    <div class="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white font-bold" id="userInitials">
+                        BG
+                    </div>
+                    <div>
+                        <div class="font-semibold" id="userName">Loading...</div>
+                        <div class="text-xs text-gray-500">Patient</div>
+                    </div>
+                </div>
+                
+                <!-- Navigation -->
+                <nav class="space-y-2">
+                    <a href="dashboard.html" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-600 hover:text-white">
+                        <i class="fas fa-home w-6"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="prediction.html" class="sidebar-item active flex items-center space-x-3 px-4 py-3 rounded-lg">
+                        <i class="fas fa-robot w-6"></i>
+                        <span>13-Parameter Prediction</span>
+                    </a>
+                    <a href="diet-plan.html" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-600 hover:text-white">
+                        <i class="fas fa-utensils w-6"></i>
+                        <span>My Diet Plan</span>
+                    </a>
+                    <a href="doctor-search.html" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-600 hover:text-white">
+                        <i class="fas fa-map-marker-alt w-6"></i>
+                        <span>Doctor Search</span>
+                    </a>
+                    <a href="whatsapp-agent.html" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-600 hover:text-white">
+                        <i class="fab fa-whatsapp w-6"></i>
+                        <span>WhatsApp Agent</span>
+                    </a>
+                    <a href="settings.html" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-600 hover:text-white">
+                        <i class="fas fa-cog w-6"></i>
+                        <span>Settings</span>
+                    </a>
+                </nav>
+            </div>
+            
+            <!-- Logout Button -->
+            <div class="absolute bottom-0 w-64 p-6 border-t bg-white">
+                <button onclick="logout()" class="flex items-center space-x-3 text-gray-600 hover:text-red-600 w-full">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- ==================== MAIN CONTENT ==================== -->
+        <div class="flex-1 ml-64 p-8 overflow-y-auto">
+            <!-- Header -->
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">13-Parameter COPD Risk Prediction</h1>
+                <p class="text-gray-600">Comprehensive assessment using clinical parameters for accurate risk stratification</p>
+            </div>
+            
+            <!-- Info Banner -->
+            <div class="info-box flex items-start mb-6">
+                <i class="fas fa-info-circle text-2xl flex-shrink-0 mt-1"></i>
+                <div>
+                    <p class="text-sm text-blue-800 font-medium">All 13 clinical parameters are based on GOLD guidelines and medical research.</p>
+                    <p class="text-xs text-blue-600 mt-1">Fill all fields for most accurate prediction</p>
+                </div>
+            </div>
+            
+            <!-- Main Prediction Card -->
+            <div class="bg-white rounded-xl shadow-sm p-8" id="predictionForm">
+                <!-- Progress Steps -->
+                <div class="flex items-center justify-between mb-8">
+                    <div class="flex items-center flex-1">
+                        <div class="progress-step active" id="step1-indicator">1</div>
+                        <div class="progress-line" id="progress1-2"></div>
+                        <div class="progress-step" id="step2-indicator">2</div>
+                        <div class="progress-line" id="progress2-3"></div>
+                        <div class="progress-step" id="step3-indicator">3</div>
+                    </div>
+                    <div class="ml-4 text-sm font-medium text-blue-600 bg-blue-50 px-4 py-2 rounded-full" id="step-label">
+                        Step 1: General & Physical Info
+                    </div>
+                </div>
+                
+                <!-- ==================== STEP 1: GENERAL & PHYSICAL INFO ==================== -->
+                <div id="step1" class="step">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">1. General & Physical Information</h3>
+                    <p class="text-sm text-gray-500 mb-6">Please provide your basic details for BMI calculation</p>
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <!-- Age -->
+                        <div class="input-group">
+                            <label class="input-label">
+                                <i class="fas fa-calendar-alt"></i>Age (years) <span class="text-red-500">*</span>
+                            </label>
+                            <input type="number" id="age" min="18" max="120" class="input-field" placeholder="e.g., 55">
+                        </div>
+                        
+                        <!-- Gender -->
+                        <div class="input-group">
+                            <label class="input-label">
+                                <i class="fas fa-venus-mars"></i>Gender <span class="text-red-500">*</span>
+                            </label>
+                            <select id="gender" class="input-field">
+                                <option value="">Select Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Weight -->
+                        <div class="input-group">
+                            <label class="input-label">
+                                <i class="fas fa-weight-scale"></i>Weight (kg) <span class="text-red-500">*</span>
+                            </label>
+                            <input type="number" id="weight" step="0.1" min="30" max="200" class="input-field" placeholder="e.g., 70">
+                        </div>
+                        
+                        <!-- Height -->
+                        <div class="input-group">
+                            <label class="input-label">
+                                <i class="fas fa-ruler-vertical"></i>Height (cm) <span class="text-red-500">*</span>
+                            </label>
+                            <input type="number" id="height" step="0.1" min="100" max="250" class="input-field" placeholder="e.g., 170">
+                        </div>
+                    </div>
+                    
+                    <!-- BMI Display (Auto-calculated) -->
+                    <div class="bg-gray-50 rounded-lg p-4 mt-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <span class="text-sm font-medium text-gray-700">Your BMI:</span>
+                                <span id="bmiValue" class="text-lg font-bold text-blue-600 ml-2">-</span>
+                                <span id="bmiCategory" class="text-sm text-gray-500 ml-2"></span>
+                            </div>
+                            <button type="button" onclick="calculateBMI()" class="text-sm text-blue-600 hover:text-blue-700">
+                                <i class="fas fa-sync-alt mr-1"></i>Calculate
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- mMRC Scale -->
+                    <div class="mt-8">
+                        <label class="input-label">
+                            <i class="fas fa-lungs"></i>mMRC Scale (Breathlessness Severity) <span class="text-red-500">*</span>
+                        </label>
+                        <p class="text-xs text-gray-500 mb-4">Select the grade that best describes your breathlessness</p>
+                        
+                        <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                            <!-- Grade 0 -->
+                            <div class="mmrc-card" onclick="selectMMRC(0)" id="mmrc0">
+                                <div class="mmrc-value">0</div>
+                                <div class="mmrc-label">Only on strenuous exercise</div>
+                            </div>
+                            
+                            <!-- Grade 1 -->
+                            <div class="mmrc-card" onclick="selectMMRC(1)" id="mmrc1">
+                                <div class="mmrc-value">1</div>
+                                <div class="mmrc-label">Short of breath when hurrying</div>
+                            </div>
+                            
+                            <!-- Grade 2 -->
+                            <div class="mmrc-card" onclick="selectMMRC(2)" id="mmrc2">
+                                <div class="mmrc-value">2</div>
+                                <div class="mmrc-label">Walks slower than peers</div>
+                            </div>
+                            
+                            <!-- Grade 3 -->
+                            <div class="mmrc-card" onclick="selectMMRC(3)" id="mmrc3">
+                                <div class="mmrc-value">3</div>
+                                <div class="mmrc-label">Stops after 100m or few minutes</div>
+                            </div>
+                            
+                            <!-- Grade 4 -->
+                            <div class="mmrc-card" onclick="selectMMRC(4)" id="mmrc4">
+                                <div class="mmrc-value">4</div>
+                                <div class="mmrc-label">Too breathless to leave house</div>
+                            </div>
+                        </div>
+                        <input type="hidden" id="mmrc" value="">
+                    </div>
+                </div>
+                
+                <!-- ==================== STEP 2: MEDICAL HISTORY & HABITS ==================== -->
+                <div id="step2" class="step hidden">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">2. Medical History & Habits</h3>
+                    <p class="text-sm text-gray-500 mb-6">Information about smoking, exacerbations, and occupational exposure</p>
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <!-- Smoking Pack Years -->
+                        <div class="input-group">
+                            <label class="input-label">
+                                <i class="fas fa-smoking"></i>Smoking Pack Years
+                            </label>
+                            <input type="number" id="packYears" step="0.1" min="0" max="100" class="input-field" placeholder="e.g., 20">
+                            <p class="input-help">Pack years = (cigarettes/day ÷ 20) × years smoked</p>
+                        </div>
+                        
+                        <!-- Exacerbations History -->
+                        <div class="input-group">
+                            <label class="input-label">
+                                <i class="fas fa-hospital"></i>Exacerbations (last 12 months)
+                            </label>
+                            <input type="number" id="exacerbations" min="0" max="20" class="input-field" placeholder="Number of flare-ups">
+                            <p class="input-help">Count of acute episodes requiring treatment</p>
+                        </div>
+                        
+                        <!-- Occupational Exposure - Yes/No Toggle -->
+                        <div class="md:col-span-2">
+                            <label class="input-label">
+                                <i class="fas fa-industry"></i>Occupational Exposure to Dust/Fumes
+                            </label>
+                            <div class="flex items-center space-x-6">
+                                <label class="flex items-center space-x-3 cursor-pointer">
+                                    <div class="toggle-switch">
+                                        <input type="checkbox" id="occupationalExposure">
+                                        <span class="toggle-slider"></span>
+                                    </div>
+                                    <span id="exposureLabel" class="text-sm text-gray-700">No</span>
+                                </label>
+                                <span class="text-xs text-gray-500">Toggle ON if you work in dusty/fumy environment</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Previous COPD Diagnosis -->
+                        <div class="input-group">
+                            <label class="input-label">
+                                <i class="fas fa-notes-medical"></i>Previous COPD Diagnosis
+                            </label>
+                            <select id="previousDiagnosis" class="input-field">
+                                <option value="no">No</option>
+                                <option value="yes">Yes</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Family History -->
+                        <div class="input-group">
+                            <label class="input-label">
+                                <i class="fas fa-users"></i>Family History of COPD
+                            </label>
+                            <select id="familyHistory" class="input-field">
+                                <option value="no">No</option>
+                                <option value="yes">Yes</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- ==================== STEP 3: CLINICAL & LAB REPORTS ==================== -->
+                <div id="step3" class="step hidden">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">3. Clinical & Lab Reports</h3>
+                    <p class="text-sm text-gray-500 mb-6">Enter values from your pulmonary function tests and lab reports</p>
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <!-- FEV1/FVC Ratio -->
+                        <div class="input-group">
+                            <label class="input-label">
+                                <i class="fas fa-chart-line"></i>FEV1/FVC Ratio
+                            </label>
+                            <input type="number" id="fev1Fvc" step="0.01" min="0.3" max="1.0" class="input-field" placeholder="e.g., 0.70">
+                            <p class="input-help">Normal > 0.70 | Obstructive if {'<'} 0.70</p>
+                        </div>
+                        
+                        <!-- FEV1 Percent Predicted -->
+                        <div class="input-group">
+                            <label class="input-label">
+                                <i class="fas fa-percent"></i>FEV1 % Predicted
+                            </label>
+                            <input type="number" id="fev1Percent" step="1" min="15" max="120" class="input-field" placeholder="e.g., 65">
+                            <p class="input-help">Percentage of predicted value</p>
+                        </div>
+                        
+                        <!-- Oxygen Saturation -->
+                        <div class="input-group">
+                            <label class="input-label">
+                                <i class="fas fa-droplet"></i>Oxygen Saturation (SpO₂ %)
+                            </label>
+                            <input type="number" id="oxygen" step="1" min="70" max="100" class="input-field" placeholder="e.g., 94">
+                            <p class="input-help">Normal: 95-100%</p>
+                        </div>
+                        
+                        <!-- Eosinophil Count -->
+                        <div class="input-group">
+                            <label class="input-label">
+                                <i class="fas fa-flask"></i>Eosinophil Count (cells/μL)
+                            </label>
+                            <input type="number" id="eosinophil" step="10" min="0" max="1000" class="input-field" placeholder="e.g., 150">
+                            <p class="input-help">Normal: {'<'} 300 cells/μL</p>
+                        </div>
+                        
+                        <!-- DLCO Level -->
+                        <div class="input-group">
+                            <label class="input-label">
+                                <i class="fas fa-lungs"></i>DLCO Level (% predicted)
+                            </label>
+                            <input type="number" id="dlco" step="1" min="20" max="120" class="input-field" placeholder="e.g., 75">
+                            <p class="input-help">Diffusing capacity of lungs</p>
+                        </div>
+                        
+                        <!-- Alpha-1 Antitrypsin Level -->
+                        <div class="input-group">
+                            <label class="input-label">
+                                <i class="fas fa-dna"></i>Alpha-1 Antitrypsin Level
+                            </label>
+                            <input type="number" id="aat" step="10" min="0" max="300" class="input-field" placeholder="e.g., 120">
+                            <p class="input-help">mg/dL | Normal: 100-220 mg/dL</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Note about missing values -->
+                    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                        <div class="flex">
+                            <i class="fas fa-exclamation-triangle text-yellow-600 mr-3"></i>
+                            <p class="text-sm text-yellow-700">
+                                If you don't have some lab values, leave them blank. The prediction will use average values.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Navigation Buttons -->
+                <div class="flex justify-between mt-8 pt-4 border-t">
+                    <button onclick="prevStep()" id="prevBtn" class="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition hidden">
+                        <i class="fas fa-arrow-left mr-2"></i>Previous
+                    </button>
+                    
+                    <button onclick="nextStep()" id="nextBtn" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition ml-auto">
+                        Next <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                    
+                    <button onclick="predictRisk()" id="predictBtn" class="px-8 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition hidden">
+                        <i class="fas fa-calculator mr-2"></i>Calculate 13-Parameter Risk
+                    </button>
+                </div>
+            </div>
+            
+            <!-- ==================== RESULTS SECTION ==================== -->
+            <div id="results" class="mt-8 hidden">
+                <!-- Results will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- ==================== JAVASCRIPT ==================== -->
+    <script>
+        // ==================== INITIALIZATION ====================
+        let currentStep = 1;
+        let selectedMMRC = -1;
+        
+        // Check login
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user) {
+            window.location.href = 'login.html';
+        } else {
+            document.getElementById('userName').textContent = (user.firstName || 'Bharat') + ' ' + (user.lastName || 'Goswami');
+            document.getElementById('userInitials').textContent = 
+                ((user.firstName || 'B')[0] + (user.lastName || 'G')[0]).toUpperCase();
+        }
+        
+        // ==================== BMI CALCULATION ====================
+        function calculateBMI() {
+            const weight = parseFloat(document.getElementById('weight').value);
+            const height = parseFloat(document.getElementById('height').value);
+            
+            if (weight && height) {
+                const heightInMeters = height / 100;
+                const bmi = (weight / (heightInMeters * heightInMeters)).toFixed(1);
+                document.getElementById('bmiValue').textContent = bmi;
+                
+                let category = '';
+                let color = '';
+                
+                if (bmi < 18.5) {
+                    category = 'Underweight';
+                    color = 'text-yellow-600';
+                } else if (bmi < 25) {
+                    category = 'Normal weight';
+                    color = 'text-green-600';
+                } else if (bmi < 30) {
+                    category = 'Overweight';
+                    color = 'text-orange-600';
+                } else {
+                    category = 'Obese';
+                    color = 'text-red-600';
+                }
+                
+                document.getElementById('bmiCategory').innerHTML = `<span class="${color}">(${category})</span>`;
+            }
+        }
+        
+        // Auto-calculate BMI when weight/height changes
+        document.getElementById('weight').addEventListener('input', calculateBMI);
+        document.getElementById('height').addEventListener('input', calculateBMI);
+        
+        // ==================== mMRC SELECTION ====================
+        function selectMMRC(grade) {
+            // Remove selected class from all
+            for (let i = 0; i <= 4; i++) {
+                document.getElementById(`mmrc${i}`).classList.remove('selected');
+            }
+            
+            // Add selected class to clicked
+            document.getElementById(`mmrc${grade}`).classList.add('selected');
+            document.getElementById('mmrc').value = grade;
+            selectedMMRC = grade;
+        }
+        
+        // ==================== OCCUPATIONAL EXPOSURE TOGGLE ====================
+        document.getElementById('occupationalExposure').addEventListener('change', function() {
+            document.getElementById('exposureLabel').textContent = this.checked ? 'Yes' : 'No';
+        });
+        
+        // ==================== STEP NAVIGATION ====================
+        function nextStep() {
+            if (currentStep < 3) {
+                // Validate current step
+                if (!validateStep(currentStep)) return;
+                
+                document.getElementById(`step${currentStep}`).classList.add('hidden');
+                currentStep++;
+                document.getElementById(`step${currentStep}`).classList.remove('hidden');
+                
+                updateProgress();
+                
+                document.getElementById('prevBtn').classList.remove('hidden');
+                if (currentStep === 3) {
+                    document.getElementById('nextBtn').classList.add('hidden');
+                    document.getElementById('predictBtn').classList.remove('hidden');
+                }
+            }
+        }
+        
+        function prevStep() {
+            if (currentStep > 1) {
+                document.getElementById(`step${currentStep}`).classList.add('hidden');
+                currentStep--;
+                document.getElementById(`step${currentStep}`).classList.remove('hidden');
+                
+                updateProgress();
+                
+                document.getElementById('nextBtn').classList.remove('hidden');
+                document.getElementById('predictBtn').classList.add('hidden');
+                if (currentStep === 1) {
+                    document.getElementById('prevBtn').classList.add('hidden');
+                }
+            }
+        }
+        
+        function updateProgress() {
+            // Update step indicators
+            for (let i = 1; i <= 3; i++) {
+                const indicator = document.getElementById(`step${i}-indicator`);
+                if (i < currentStep) {
+                    indicator.className = 'progress-step completed';
+                    indicator.innerHTML = '<i class="fas fa-check"></i>';
+                } else if (i === currentStep) {
+                    indicator.className = 'progress-step active';
+                    indicator.textContent = i;
+                } else {
+                    indicator.className = 'progress-step';
+                    indicator.textContent = i;
+                }
+            }
+            
+            // Update progress lines
+            if (currentStep >= 2) {
+                document.getElementById('progress1-2').classList.add('filled');
+            }
+            if (currentStep >= 3) {
+                document.getElementById('progress2-3').classList.add('filled');
+            }
+            
+            // Update label
+            const labels = [
+                'General & Physical Info',
+                'Medical History & Habits',
+                'Clinical & Lab Reports'
+            ];
+            document.getElementById('step-label').textContent = `Step ${currentStep}: ${labels[currentStep-1]}`;
+        }
+        
+        function validateStep(step) {
+            if (step === 1) {
+                const age = document.getElementById('age').value;
+                const gender = document.getElementById('gender').value;
+                const weight = document.getElementById('weight').value;
+                const height = document.getElementById('height').value;
+                const mmrc = document.getElementById('mmrc').value;
+                
+                if (!age || !gender || !weight || !height || !mmrc) {
+                    alert('Please fill all required fields in Step 1');
+                    return false;
+                }
+            }
+            return true;
+        }
+        
+        // ==================== RISK PREDICTION (13 PARAMETERS) ====================
+        // ==================== RISK PREDICTION (CONNECTED TO BACKEND) ====================
+        async function predictRisk() {
+            // 1. BMI Calculate kar lo agar user ne nahi kiya
+            calculateBMI(); 
+            
+            const btn = document.getElementById('predictBtn');
+            const originalText = btn.innerHTML;
+            
+            // Button ko loading mode mein daalo
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Analyzing...';
+            btn.disabled = true;
+
+            try {
+                // --- DATA COLLECT KARNA ---
+                const age = parseFloat(document.getElementById('age').value) || 0;
+                const bmiText = document.getElementById('bmiValue').textContent;
+                const bmi = parseFloat(bmiText) || 0; // Text se value uthai
+                const mmrc = parseInt(document.getElementById('mmrc').value) || 0;
+                
+                const packYears = parseFloat(document.getElementById('packYears').value) || 0;
+                const exacerbations = parseInt(document.getElementById('exacerbations').value) || 0;
+                const occupationalExposure = document.getElementById('occupationalExposure').checked ? 1 : 0;
+                const previousDiagnosis = document.getElementById('previousDiagnosis').value === 'yes' ? 1 : 0;
+                const familyHistory = document.getElementById('familyHistory').value === 'yes' ? 1 : 0;
+                
+                const fev1Fvc = parseFloat(document.getElementById('fev1Fvc').value) || 0;
+                const fev1Percent = parseFloat(document.getElementById('fev1Percent').value) || 0;
+                const oxygen = parseFloat(document.getElementById('oxygen').value) || 0;
+                const eosinophil = parseFloat(document.getElementById('eosinophil').value) || 0;
+                const dlco = parseFloat(document.getElementById('dlco').value) || 0;
+                const aat = parseFloat(document.getElementById('aat').value) || 0;
+
+                // --- BACKEND KO BHEJNE WALA DATA ---
+                // Note: Keys wahi honi chahiye jo app.py maang raha hai
+                const payload = {
+                    age: age,
+                    bmi: bmi,
+                    mmrc: mmrc,
+                    packYears: packYears,
+                    exacerbations: exacerbations,
+                    occupationalExposure: occupationalExposure,
+                    fev1Fvc: fev1Fvc,
+                    fev1: fev1Percent,  // Backend 'fev1' maangta hai, hum 'fev1Percent' bhej rahe hain
+                    oxygen: oxygen,
+                    eosinophil: eosinophil,
+                    dlco: dlco,
+                    aat: aat
+                    // previousDiagnosis aur familyHistory backend model mein nahi the, isliye nahi bhej rahe
+                };
+
+                console.log("Sending Data:", payload); // Debugging ke liye
+
+                // --- SERVER REQUEST ---
+                const response = await fetch('http://127.0.0.1:5000/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Server error: ${response.status}`);
+                }
+
+                const resultData = await response.json();
+                console.log("Result Received:", resultData);
+
+                // --- RESULT PROCESS KARNA ---
+                const riskScore = resultData.risk_score;
+                const isHighRisk = resultData.result.includes("High"); // Check agar result mein 'High' likha hai
+                
+                let riskLevel, riskCategory, riskDescription, recommendations;
+
+                if (isHighRisk) {
+                    riskLevel = 'High Risk';
+                    riskCategory = 'high';
+                    riskDescription = 'Immediate medical consultation recommended (AI Predicted)';
+                    recommendations = [
+                        '⚠️ Consult a pulmonologist immediately',
+                        '💊 Follow prescribed medication strictly',
+                        '🏥 Regular monitoring required',
+                        '🚭 Quit smoking immediately',
+                        '💨 Use prescribed inhalers'
+                    ];
+                } else {
+                    riskLevel = 'Low Risk';
+                    riskCategory = 'low';
+                    riskDescription = 'Maintain healthy lifestyle for prevention (AI Predicted)';
+                    recommendations = [
+                        '🥗 Follow maintenance diet plan',
+                        '🏃 Regular exercise',
+                        '🚭 Avoid smoking',
+                        '📅 Annual check-ups',
+                        '💧 Stay hydrated'
+                    ];
+                }
+
+                // --- SCREEN PAR DIKHANA ---
+                // Ye wahi function hai jo tumhare code mein neeche already hai
+                showResults(riskScore, riskLevel, riskDescription, recommendations, riskCategory);
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert("Prediction Failed! Check if Python server (app.py) is running.\nError: " + error.message);
+            } finally {
+                // Button wapas normal karna
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        }
+        function showResults(score, level, description, recommendations, category) {
+            // Hide form, show results
+            document.getElementById('predictionForm').classList.add('hidden');
+            document.getElementById('results').classList.remove('hidden');
+            
+            // Get color based on category
+            let bgColor, textColor, gradient;
+            if (category === 'high') {
+                bgColor = 'bg-red-50';
+                textColor = 'text-red-600';
+                gradient = 'risk-high';
+            } else if (category === 'medium') {
+                bgColor = 'bg-orange-50';
+                textColor = 'text-orange-600';
+                gradient = 'risk-medium';
+            } else {
+                bgColor = 'bg-green-50';
+                textColor = 'text-green-600';
+                gradient = 'risk-low';
+            }
+            
+            // Build results HTML
+            let recHTML = '';
+            recommendations.forEach(rec => {
+                recHTML += `<li class="flex items-start p-2 hover:bg-gray-50 rounded-lg transition">
+                    <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                    <span class="text-gray-700">${rec}</span>
+                </li>`;
+            });
+            
+            const resultsHTML = `
+                <div class="result-card ${bgColor}">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6">Your 13-Parameter Risk Assessment</h2>
+                    
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <!-- Risk Gauge -->
+                        <div class="text-center">
+                            <div class="relative w-64 h-64 mx-auto">
+                                <canvas id="riskGauge"></canvas>
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <span class="text-4xl font-bold ${textColor}">${score}%</span>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <span class="text-2xl font-bold ${textColor}">${level}</span>
+                                <p class="text-gray-600 mt-2">${description}</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Recommendations -->
+                        <div>
+                            <h3 class="font-semibold text-lg mb-4 flex items-center">
+                                <i class="fas fa-clipboard-list text-blue-600 mr-2"></i>
+                                Personalized Recommendations
+                            </h3>
+                            <ul class="space-y-2 mb-6">
+                                ${recHTML}
+                            </ul>
+                            
+                            <div class="grid grid-cols-2 gap-3 mt-6">
+                                <a href="diet-plan.html" class="block bg-green-600 text-white text-center py-3 rounded-lg hover:bg-green-700 transition">
+                                    <i class="fas fa-utensils mr-2"></i>Diet Plan
+                                </a>
+                                <a href="doctor-search.html" class="block bg-blue-600 text-white text-center py-3 rounded-lg hover:bg-blue-700 transition">
+                                    <i class="fas fa-map-marker-alt mr-2"></i>Find Doctor
+                                </a>
+                                <a href="#" onclick="shareResults()" class="block bg-purple-600 text-white text-center py-3 rounded-lg hover:bg-purple-700 transition col-span-2">
+                                    <i class="fab fa-whatsapp mr-2"></i>Share with Doctor
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Parameters Summary -->
+                    <div class="mt-8 pt-6 border-t">
+                        <h4 class="font-semibold text-gray-700 mb-3">13 Parameters Analyzed:</h4>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+                            <span class="bg-white p-2 rounded-lg"><i class="fas fa-calendar text-blue-600 mr-1"></i> Age</span>
+                            <span class="bg-white p-2 rounded-lg"><i class="fas fa-weight-scale text-blue-600 mr-1"></i> BMI</span>
+                            <span class="bg-white p-2 rounded-lg"><i class="fas fa-lungs text-blue-600 mr-1"></i> mMRC Scale</span>
+                            <span class="bg-white p-2 rounded-lg"><i class="fas fa-smoking text-blue-600 mr-1"></i> Pack Years</span>
+                            <span class="bg-white p-2 rounded-lg"><i class="fas fa-hospital text-blue-600 mr-1"></i> Exacerbations</span>
+                            <span class="bg-white p-2 rounded-lg"><i class="fas fa-industry text-blue-600 mr-1"></i> Occupation</span>
+                            <span class="bg-white p-2 rounded-lg"><i class="fas fa-chart-line text-blue-600 mr-1"></i> FEV1/FVC</span>
+                            <span class="bg-white p-2 rounded-lg"><i class="fas fa-percent text-blue-600 mr-1"></i> FEV1%</span>
+                            <span class="bg-white p-2 rounded-lg"><i class="fas fa-droplet text-blue-600 mr-1"></i> SpO₂</span>
+                            <span class="bg-white p-2 rounded-lg"><i class="fas fa-flask text-blue-600 mr-1"></i> Eosinophils</span>
+                            <span class="bg-white p-2 rounded-lg"><i class="fas fa-lungs text-blue-600 mr-1"></i> DLCO</span>
+                            <span class="bg-white p-2 rounded-lg"><i class="fas fa-dna text-blue-600 mr-1"></i> AAT Level</span>
+                            <span class="bg-white p-2 rounded-lg"><i class="fas fa-notes-medical text-blue-600 mr-1"></i> Previous Dx</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Actions -->
+                    <div class="flex justify-end space-x-4 mt-6">
+                        <button onclick="redoPrediction()" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition">
+                            <i class="fas fa-redo mr-2"></i>Redo Assessment
+                        </button>
+                        <button onclick="window.print()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                            <i class="fas fa-print mr-2"></i>Print Report
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('results').innerHTML = resultsHTML;
+            
+            // Create gauge chart
+            const ctx = document.getElementById('riskGauge').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: [score, 100-score],
+                        backgroundColor: [
+                            category === 'high' ? '#ef4444' : category === 'medium' ? '#f59e0b' : '#10b981',
+                            '#e5e7eb'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    cutout: '80%',
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { enabled: false }
+                    }
+                }
+            });
+        }
+        
+        function redoPrediction() {
+            document.getElementById('predictionForm').classList.remove('hidden');
+            document.getElementById('results').classList.add('hidden');
+        }
+        
+        function shareResults() {
+            const phoneNumber = "+14155238886";
+            const riskLevel = document.querySelector('#results .text-2xl.font-bold').textContent;
+            const score = document.querySelector('#results .text-4xl.font-bold').textContent;
+            
+            const message = encodeURIComponent(
+                `*My COPD Risk Assessment Results*\n\n` +
+                `📊 *Risk Level:* ${riskLevel}\n` +
+                `📈 *Risk Score:* ${score}\n\n` +
+                `This assessment used 13 clinical parameters as per GOLD guidelines.\n\n` +
+                `Please advise on next steps.`
+            );
+            
+            window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
+        }
+        
+        // ==================== LOGOUT ====================
+        function logout() {
+            localStorage.removeItem('user');
+            window.location.href = '../index.html';
+        }
+    </script>
+</body>
+</html>

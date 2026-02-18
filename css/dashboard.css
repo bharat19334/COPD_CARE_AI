@@ -1,0 +1,1423 @@
+/**
+ * COPD Care AI - Dashboard Styles
+ * Technovation 2026 Project
+ * Contains all dashboard-specific styling
+ */
+
+/* ==================== DASHBOARD LAYOUT ==================== */
+
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+}
+
+/* Main Content Area */
+.dashboard-main {
+    flex: 1;
+    margin-left: 280px;
+    padding: 2rem;
+    transition: all 0.3s ease;
+}
+
+/* ==================== SIDEBAR STYLES ==================== */
+
+.dashboard-sidebar {
+    width: 280px;
+    background: white;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+    position: fixed;
+    height: 100vh;
+    overflow-y: auto;
+    z-index: 50;
+}
+
+.sidebar-header {
+    padding: 2rem 1.5rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.logo-icon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-icon i {
+    font-size: 1.8rem;
+    color: white;
+}
+
+.logo-text h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.logo-text span {
+    font-size: 0.8rem;
+    color: #667eea;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* User Profile in Sidebar */
+.sidebar-user {
+    padding: 1.5rem;
+    background: #f9fafb;
+    margin: 1rem;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.user-avatar {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+.user-info h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0;
+}
+
+.user-info p {
+    font-size: 0.8rem;
+    color: #6b7280;
+    margin: 0.2rem 0 0;
+}
+
+/* Navigation Menu */
+.sidebar-nav {
+    padding: 1rem;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem 1rem;
+    margin: 0.3rem 0;
+    border-radius: 10px;
+    color: #4b5563;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.nav-item i {
+    width: 24px;
+    font-size: 1.2rem;
+    margin-right: 1rem;
+}
+
+.nav-item span {
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.nav-item:hover {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    transform: translateX(5px);
+}
+
+.nav-item.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
+}
+
+/* Sidebar Footer */
+.sidebar-footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 1.5rem;
+    border-top: 1px solid #f0f0f0;
+    background: white;
+}
+
+.logout-btn {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem 1rem;
+    border-radius: 10px;
+    color: #ef4444;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    width: 100%;
+    border: none;
+    background: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.logout-btn i {
+    width: 24px;
+    margin-right: 1rem;
+}
+
+.logout-btn:hover {
+    background: #fee2e2;
+    transform: translateX(5px);
+}
+
+/* ==================== TOP BAR STYLES ==================== */
+
+.dashboard-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    background: white;
+    padding: 1rem 2rem;
+    border-radius: 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.page-title h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 0;
+}
+
+.page-title p {
+    color: #6b7280;
+    margin: 0.3rem 0 0;
+    font-size: 0.9rem;
+}
+
+.topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+/* Weather Widget */
+.weather-widget {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 0.8rem 1.5rem;
+    border-radius: 40px;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.weather-icon {
+    font-size: 1.8rem;
+}
+
+.weather-info {
+    line-height: 1.3;
+}
+
+.weather-info .location {
+    font-size: 0.8rem;
+    opacity: 0.9;
+}
+
+.weather-info .temp {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+/* Notification Bell */
+.notification-bell {
+    position: relative;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+.notification-bell i {
+    font-size: 1.5rem;
+    color: #4b5563;
+    transition: color 0.3s ease;
+}
+
+.notification-bell:hover i {
+    color: #667eea;
+}
+
+.notification-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: #ef4444;
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 600;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: pulse 2s infinite;
+}
+
+/* ==================== STATS CARDS ==================== */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card:hover::before {
+    opacity: 1;
+}
+
+.stat-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.stat-icon i {
+    font-size: 1.8rem;
+}
+
+.stat-icon.blue {
+    background: #e0f2fe;
+    color: #0284c7;
+}
+
+.stat-icon.green {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.stat-icon.purple {
+    background: #f3e8ff;
+    color: #9333ea;
+}
+
+.stat-icon.yellow {
+    background: #fef9c3;
+    color: #ca8a04;
+}
+
+.stat-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 0.3rem 0;
+}
+
+.stat-label {
+    color: #6b7280;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.stat-link {
+    color: #667eea;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    transition: gap 0.3s ease;
+}
+
+.stat-link:hover {
+    gap: 0.5rem;
+}
+
+/* ==================== DASHBOARD GRID ==================== */
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 1.5rem;
+}
+
+/* Left Column */
+.left-column {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Right Column */
+.right-column {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Dashboard Cards */
+.dashboard-card {
+    background: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.dashboard-card:hover {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.card-header h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0;
+}
+
+.card-header .badge {
+    background: #f3f4f6;
+    color: #6b7280;
+    font-size: 0.8rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+}
+
+/* ==================== PREDICTION CARD ==================== */
+
+.prediction-card {
+    background: #f0f9ff;
+    border-radius: 12px;
+    padding: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.prediction-result {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.prediction-label {
+    color: #0369a1;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.prediction-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #0284c7;
+}
+
+.recommendation-text {
+    color: #4b5563;
+    font-size: 0.9rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px dashed #bae6fd;
+}
+
+/* ==================== MEAL CARDS ==================== */
+
+.meals-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.meal-card {
+    background: #f9fafb;
+    border-radius: 12px;
+    padding: 1rem;
+    transition: all 0.3s ease;
+    position: relative;
+    border-left: 4px solid transparent;
+}
+
+.meal-card.breakfast {
+    border-left-color: #f59e0b;
+}
+
+.meal-card.lunch {
+    border-left-color: #10b981;
+}
+
+.meal-card.dinner {
+    border-left-color: #3b82f6;
+}
+
+.meal-card.snack {
+    border-left-color: #8b5cf6;
+}
+
+.meal-card:hover {
+    background: #f3f4f6;
+    transform: translateX(5px);
+}
+
+.meal-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.meal-header i {
+    font-size: 1rem;
+}
+
+.meal-header.breakfast i {
+    color: #f59e0b;
+}
+
+.meal-header.lunch i {
+    color: #10b981;
+}
+
+.meal-header.dinner i {
+    color: #3b82f6;
+}
+
+.meal-header.snack i {
+    color: #8b5cf6;
+}
+
+.meal-header h4 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0;
+}
+
+.meal-time {
+    font-size: 0.7rem;
+    color: #6b7280;
+    margin-left: auto;
+}
+
+.meal-name {
+    font-size: 0.9rem;
+    color: #4b5563;
+    margin: 0.5rem 0;
+    line-height: 1.3;
+}
+
+.meal-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.5rem;
+}
+
+.meal-calories {
+    font-size: 0.8rem;
+    color: #9ca3af;
+}
+
+.meal-check {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #d1d5db;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.meal-check.checked {
+    background: #10b981;
+    border-color: #10b981;
+    position: relative;
+}
+
+.meal-check.checked::after {
+    content: '✓';
+    color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 12px;
+}
+
+/* Progress Bar */
+.progress-container {
+    margin-top: 1rem;
+}
+
+.progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.progress-label {
+    font-size: 0.9rem;
+    color: #4b5563;
+}
+
+.progress-value {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #10b981;
+}
+
+.progress-bar {
+    height: 8px;
+    background: #e5e7eb;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #10b981, #34d399);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+    width: 0%;
+}
+
+/* ==================== WATER TRACKER ==================== */
+
+.water-tracker {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    border-radius: 12px;
+    padding: 1.2rem;
+    color: white;
+}
+
+.water-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.water-header h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.water-stats {
+    display: flex;
+    align-items: baseline;
+    gap: 0.3rem;
+}
+
+.water-current {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.water-target {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.water-progress {
+    height: 8px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    margin: 1rem 0;
+    overflow: hidden;
+}
+
+.water-progress-fill {
+    height: 100%;
+    background: white;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+    width: 0%;
+}
+
+.water-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.water-btn {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 0.5rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+}
+
+.water-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+/* ==================== DOCTORS LIST ==================== */
+
+.doctors-list {
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+.doctors-list::-webkit-scrollbar {
+    width: 5px;
+}
+
+.doctors-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.doctors-list::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 10px;
+}
+
+.doctor-item {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    margin-bottom: 0.5rem;
+    background: #f9fafb;
+}
+
+.doctor-item:hover {
+    background: #f3f4f6;
+    transform: translateX(5px);
+}
+
+.doctor-avatar {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin-right: 1rem;
+    flex-shrink: 0;
+}
+
+.doctor-info {
+    flex: 1;
+}
+
+.doctor-name {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0;
+}
+
+.doctor-specialty {
+    font-size: 0.8rem;
+    color: #6b7280;
+    margin: 0.2rem 0 0;
+}
+
+.doctor-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.2rem;
+}
+
+.doctor-rating {
+    font-size: 0.75rem;
+    color: #f59e0b;
+}
+
+.doctor-distance {
+    font-size: 0.7rem;
+    color: #9ca3af;
+}
+
+.doctor-status {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 12px;
+    font-weight: 500;
+}
+
+.status-available {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.status-busy {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+/* ==================== AI CHAT PREVIEW ==================== */
+
+.chat-preview {
+    background: #f9fafb;
+    border-radius: 12px;
+    padding: 1rem;
+    height: 120px;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+}
+
+.chat-preview::-webkit-scrollbar {
+    width: 4px;
+}
+
+.chat-preview::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 10px;
+}
+
+.chat-message {
+    margin-bottom: 0.8rem;
+    max-width: 85%;
+}
+
+.chat-message.user {
+    margin-left: auto;
+}
+
+.chat-message.bot {
+    margin-right: auto;
+}
+
+.message-content {
+    padding: 0.5rem 1rem;
+    border-radius: 15px;
+    font-size: 0.85rem;
+    line-height: 1.3;
+}
+
+.chat-message.user .message-content {
+    background: #3b82f6;
+    color: white;
+    border-bottom-right-radius: 4px;
+}
+
+.chat-message.bot .message-content {
+    background: #e5e7eb;
+    color: #1f2937;
+    border-bottom-left-radius: 4px;
+}
+
+.message-time {
+    font-size: 0.65rem;
+    color: #9ca3af;
+    margin-top: 0.2rem;
+    text-align: right;
+}
+
+.chat-input {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.8rem;
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 0.7rem 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.chat-input input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.chat-input button {
+    width: 40px;
+    height: 40px;
+    background: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chat-input button:hover {
+    background: #2563eb;
+    transform: scale(1.1);
+}
+
+.quick-questions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.quick-question {
+    background: #f3f4f6;
+    border: none;
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    color: #4b5563;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.quick-question:hover {
+    background: #e5e7eb;
+    transform: translateY(-2px);
+}
+
+/* ==================== BREATHING EXERCISES ==================== */
+
+.exercises-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.exercise-card {
+    background: #f9fafb;
+    border-radius: 12px;
+    padding: 1rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.exercise-card:hover {
+    background: #f3f4f6;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.exercise-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.exercise-icon.blue {
+    background: #dbeafe;
+    color: #2563eb;
+}
+
+.exercise-icon.green {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.exercise-icon i {
+    font-size: 1.5rem;
+}
+
+.exercise-info h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0;
+}
+
+.exercise-info p {
+    font-size: 0.8rem;
+    color: #6b7280;
+    margin: 0.3rem 0 0;
+}
+
+/* ==================== HEALTH TIPS ==================== */
+
+.tip-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 15px;
+    padding: 1.5rem;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.tip-card::before {
+    content: '\f0eb';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    bottom: -20px;
+    right: -20px;
+    font-size: 8rem;
+    opacity: 0.1;
+    color: white;
+}
+
+.tip-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #fbbf24;
+}
+
+.tip-text {
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.tip-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.next-tip-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.next-tip-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateX(5px);
+}
+
+/* ==================== EMERGENCY SECTION ==================== */
+
+.emergency-card {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 15px;
+    padding: 1.5rem;
+}
+
+.emergency-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #dc2626;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.emergency-symptoms {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem;
+}
+
+.emergency-symptoms li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #991b1b;
+    font-size: 0.9rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #fecaca;
+}
+
+.emergency-symptoms li:last-child {
+    border-bottom: none;
+}
+
+.emergency-symptoms li i {
+    font-size: 0.5rem;
+    color: #dc2626;
+}
+
+.emergency-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.emergency-btn {
+    padding: 1rem;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    text-decoration: none;
+}
+
+.emergency-btn.call {
+    background: #dc2626;
+    color: white;
+}
+
+.emergency-btn.call:hover {
+    background: #b91c1c;
+    transform: scale(1.05);
+    animation: pulse 1s infinite;
+}
+
+.emergency-btn.doctor {
+    background: #2563eb;
+    color: white;
+}
+
+.emergency-btn.doctor:hover {
+    background: #1d4ed8;
+    transform: scale(1.05);
+}
+
+/* ==================== QUICK LINKS ==================== */
+
+.quick-links {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.8rem;
+}
+
+.quick-link {
+    background: #f9fafb;
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.quick-link:hover {
+    background: #f3f4f6;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.quick-link i {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.quick-link.blue i {
+    color: #2563eb;
+}
+
+.quick-link.green i {
+    color: #16a34a;
+}
+
+.quick-link.purple i {
+    color: #9333ea;
+}
+
+.quick-link span {
+    display: block;
+    font-size: 0.8rem;
+    color: #4b5563;
+    font-weight: 500;
+}
+
+/* ==================== FOOTER ACTIONS ==================== */
+
+.footer-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+.action-btn {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+}
+
+.action-btn.gray {
+    background: #6b7280;
+    color: white;
+}
+
+.action-btn.gray:hover {
+    background: #4b5563;
+    transform: translateY(-2px);
+}
+
+.action-btn.green {
+    background: #25D366;
+    color: white;
+}
+
+.action-btn.green:hover {
+    background: #128C7E;
+    transform: translateY(-2px);
+}
+
+/* ==================== MODAL STYLES ==================== */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-container {
+    background: white;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: slideUp 0.3s ease;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    background: white;
+    border-radius: 20px 20px 0 0;
+    z-index: 10;
+}
+
+.modal-header h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0;
+}
+
+.modal-close {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: #f3f4f6;
+    color: #6b7280;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-close:hover {
+    background: #e5e7eb;
+    color: #1f2937;
+    transform: rotate(90deg);
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-footer {
+    padding: 1.5rem;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    position: sticky;
+    bottom: 0;
+    background: white;
+    border-radius: 0 0 20px 20px;
+}
+
+/* Notification Modal Specific */
+.notification-item {
+    padding: 1rem;
+    border-radius: 10px;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-left: 3px solid transparent;
+}
+
+.notification-item.unread {
+    background: #eff6ff;
+    border-left-color: #2563eb;
+}
+
+.notification-item.read {
+    background: #f9fafb;
+    border-left-color: #d1d5db;
+}
+
+.notification-item:hover {
+    background: #f3f4f6;
+    transform: translateX(5px);
+}
+
+.notification-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.notification-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.notification-icon.blue {
+    background: #dbeafe;
+    color: #2563eb;
+}
+
+.notification-icon.green {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.notification-icon.purple {
+    background: #f3e8ff;
+    color: #9333ea;
+}
+
+.notification-title {
+    font-weight: 600;
+    color: #1f2937;
+    flex: 1;
+}
+
+.notification-time {
+    font-size: 0.75rem;
+    color: #9ca3af;
+}
+
+.notification-message {
+    font-size: 0.9rem;
+    color: #4b5563;
+    margin-left: 2.5rem;
+}
+
+/* Exercise Modal Specific */
+.timer-display {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #2563eb;
+    text-align: center;
+    margin: 2rem 0;
+    font-family: monospace;
+    background: #f3f4f6;
+    padding: 1rem;
+    border-radius: 10px;
+}
+
+.exercise-steps {
+    list-style: none;
+    padding: 0;
+    counter-reset: step-counter;
+}
+
+.exercise-step {
+    counter-increment: step-counter;
+    margin-bottom: 1rem;
+    padding-left

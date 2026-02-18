@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Details - COPD Care AI</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .sidebar-item {
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-item:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .rating-star {
+            color: #fbbf24;
+        }
+        
+        .availability-badge {
+            background: #10b981;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <div class="w-64 bg-white shadow-lg fixed h-full">
+            <div class="p-6">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3 mb-8">
+                    <div class="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-lungs text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="text-xl font-bold text-gray-800">COPD Care</span>
+                        <span class="text-xs font-medium text-blue-600 block">AI</span>
+                    </div>
+                </div>
+                
+                <!-- User Info -->
+                <div class="flex items-center space-x-3 mb-6 p-3 bg-gray-50 rounded-lg">
+                    <div class="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white font-bold">
+                        BG
+                    </div>
+                    <div>
+                        <div class="font-semibold" id="userName">Bharat Goswami</div>
+                        <div class="text-xs text-gray-500">Patient</div>
+                    </div>
+                </div>
+                
+                <!-- Navigation -->
+                <nav class="space-y-2">
+                    <a href="dashboard.html" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-600 hover:text-white">
+                        <i class="fas fa-home w-6"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="prediction.html" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-600 hover:text-white">
+                        <i class="fas fa-robot w-6"></i>
+                        <span>COPD Prediction</span>
+                    </a>
+                    <a href="diet-plan.html" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-600 hover:text-white">
+                        <i class="fas fa-utensils w-6"></i>
+                        <span>My Diet Plan</span>
+                    </a>
+                    <a href="doctor-search.html" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-600 hover:text-white">
+                        <i class="fas fa-map-marker-alt w-6"></i>
+                        <span>Doctor Search</span>
+                    </a>
+                    <a href="whatsapp-agent.html" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-600 hover:text-white">
+                        <i class="fab fa-whatsapp w-6"></i>
+                        <span>WhatsApp Agent</span>
+                    </a>
+                    <a href="settings.html" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-600 hover:text-white">
+                        <i class="fas fa-cog w-6"></i>
+                        <span>Settings</span>
+                    </a>
+                </nav>
+            </div>
+            
+            <!-- Logout -->
+            <div class="absolute bottom-0 w-64 p-6 border-t">
+                <button onclick="logout()" class="flex items-center space-x-3 text-gray-600 hover:text-red-600 w-full">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="flex-1 ml-64 p-8 overflow-y-auto">
+            <!-- Back Button -->
+            <button onclick="history.back()" class="flex items-center text-gray-600 hover:text-blue-600 mb-6">
+                <i class="fas fa-arrow-left mr-2"></i>
+                Back to Search Results
+            </button>
+            
+            <!-- Doctor Profile Card -->
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden mb-8">
+                <!-- Cover Image -->
+                <div class="h-48 bg-gradient-to-r from-blue-600 to-purple-600"></div>
+                
+                <!-- Profile Info -->
+                <div class="px-8 pb-8">
+                    <div class="flex flex-col md:flex-row md:items-end -mt-16 mb-6">
+                        <div class="w-32 h-32 bg-white rounded-2xl shadow-lg p-2 mb-4 md:mb-0 md:mr-6">
+                            <div class="w-full h-full bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-user-md text-white text-5xl"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="flex-1">
+                            <div class="flex flex-col md:flex-row md:items-center justify-between">
+                                <div>
+                                    <h1 class="text-3xl font-bold text-gray-800">Dr. Rakesh Gupta</h1>
+                                    <p class="text-xl text-gray-600 mt-1">Senior Pulmonologist (MD, FCCP)</p>
+                                    <div class="flex items-center mt-2">
+                                        <div class="flex text-yellow-400">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star-half-alt"></i>
+                                        </div>
+                                        <span class="ml-2 text-gray-600">4.8 (150+ reviews)</span>
+                                        <span class="mx-3 text-gray-300">|</span>
+                                        <span class="text-green-600 font-semibold">Available Today</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-4 md:mt-0">
+                                    <span class="bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-semibold">
+                                        <i class="fas fa-check-circle mr-1"></i>Verified
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Doctor Details Grid -->
+                    <div class="grid md:grid-cols-3 gap-8 mt-8">
+                        <!-- Left Column - Info -->
+                        <div class="md:col-span-2 space-y-6">
+                            <!-- About -->
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-800 mb-3">About</h3>
+                                <p class="text-gray-600">Dr. Rakesh Gupta is a highly experienced pulmonologist with over 18 years of expertise in treating respiratory conditions including COPD, asthma, and interstitial lung disease. He is known for his patient-centric approach and commitment to providing comprehensive care.</p>
+                            </div>
+                            
+                            <!-- Expertise -->
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-800 mb-3">Areas of Expertise</h3>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">COPD Management</span>
+                                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Asthma</span>
+                                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Interstitial Lung Disease</span>
+                                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Pulmonary Rehabilitation</span>
+                                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Bronchoscopy</span>
+                                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Sleep Apnea</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Education & Experience -->
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <h3 class="text-lg font-semibold text-gray-800 mb-3">Education</h3>
+                                    <ul class="space-y-2 text-gray-600">
+                                        <li><i class="fas fa-graduation-cap text-blue-600 w-6"></i> MD - Pulmonary Medicine, AIIMS Delhi</li>
+                                        <li><i class="fas fa-certificate text-blue-600 w-6"></i> FCCP - American College of Chest Physicians</li>
+                                        <li><i class="fas fa-university text-blue-600 w-6"></i> MBBS - SMS Medical College, Jaipur</li>
+                                    </ul>
+                                </div>
+                                
+                                <div>
+                                    <h3 class="text-lg font-semibold text-gray-800 mb-3">Experience</h3>
+                                    <ul class="space-y-2 text-gray-600">
+                                        <li><i class="fas fa-briefcase text-blue-600 w-6"></i> 18+ Years Overall Experience</li>
+                                        <li><i class="fas fa-hospital text-blue-600 w-6"></i> 10 Years at Apex Lung Centre</li>
+                                        <li><i class="fas fa-star text-blue-600 w-6"></i> 5000+ Patients Treated</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <!-- Languages -->
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-800 mb-3">Languages</h3>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm">English</span>
+                                    <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm">Hindi</span>
+                                    <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm">Rajasthani</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Right Column - Appointment -->
+                        <div class="space-y-6">
+                            <!-- Clinic Info -->
+                            <div class="bg-gray-50 rounded-xl p-6">
+                                <h3 class="font-semibold text-gray-800 mb-4">Clinic Information</h3>
+                                
+                                <div class="space-y-3">
+                                    <div class="flex items-start space-x-3">
+                                        <i class="fas fa-map-marker-alt text-blue-600 mt-1"></i>
+                                        <div>
+                                            <p class="font-medium">Apex Lung Centre</p>
+                                            <p class="text-sm text-gray-600">Talwandi, Kota, Rajasthan 324005</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-start space-x-3">
+                                        <i class="fas fa-clock text-blue-600 mt-1"></i>
+                                        <div>
+                                            <p class="font-medium">Consultation Hours</p>
+                                            <p class="text-sm text-gray-600">Mon - Sat: 10:00 AM - 7:00 PM</p>
+                                            <p class="text-sm text-gray-600">Sunday: Closed</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-start space-x-3">
+                                        <i class="fas fa-phone-alt text-blue-600 mt-1"></i>
+                                        <div>
+                                            <p class="font-medium">Contact</p>
+                                            <p class="text-sm text-gray-600">+91 98765 43210</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-start space-x-3">
+                                        <i class="fas fa-rupee-sign text-blue-600 mt-1"></i>
+                                        <div>
+                                            <p class="font-medium">Consultation Fee</p>
+                                            <p class="text-sm text-gray-600">₹800 (Initial)</p>
+                                            <p class="text-sm text-gray-600">₹500 (Follow-up)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Appointment Booking -->
+                            <div class="bg-white border rounded-xl p-6">
+                                <h3 class="font-semibold text-gray-800 mb-4">Book Appointment</h3>
+                                
+                                <div class="space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Select Date</label>
+                                        <input type="date" id="appointmentDate" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                    </div>
+                                    
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Select Time</label>
+                                        <select id="appointmentTime" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                            <option value="">Choose a slot</option>
+                                            <option value="10:00">10:00 AM</option>
+                                            <option value="11:00">11:00 AM</option>
+                                            <option value="12:00">12:00 PM</option>
+                                            <option value="15:00">3:00 PM</option>
+                                            <option value="16:00">4:00 PM</option>
+                                            <option value="17:00">5:00 PM</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Appointment Type</label>
+                                        <div class="space-y-2">
+                                            <label class="flex items-center">
+                                                <input type="radio" name="appointmentType" value="clinic" checked class="text-blue-600">
+                                                <span class="ml-2">In-Clinic Consultation</span>
+                                            </label>
+                                            <label class="flex items-center">
+                                                <input type="radio" name="appointmentType" value="video" class="text-blue-600">
+                                                <span class="ml-2">Video Consultation</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    
+                                    <button onclick="bookAppointment()" class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700">
+                                        <i class="fas fa-calendar-check mr-2"></i>Book Appointment
+                                    </button>
+                                    
+                                    <p class="text-xs text-center text-gray-500">
+                                        <i class="fas fa-shield-alt text-green-600 mr-1"></i>
+                                        Secure & confidential booking
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <!-- Reviews Summary -->
+                            <div class="bg-white border rounded-xl p-6">
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="font-semibold text-gray-800">Patient Reviews</h3>
+                                    <a href="#" class="text-sm text-blue-600">View All</a>
+                                </div>
+                                
+                                <div class="flex items-center mb-4">
+                                    <div class="text-3xl font-bold text-gray-800 mr-4">4.8</div>
+                                    <div>
+                                        <div class="flex text-yellow-400">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star-half-alt"></i>
+                                        </div>
+                                        <p class="text-sm text-gray-600">Based on 150+ reviews</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="space-y-3">
+                                    <div class="border-b pb-3">
+                                        <div class="flex items-center justify-between mb-1">
+                                            <span class="font-medium">Ramesh S.</span>
+                                            <div class="flex text-yellow-400">
+                                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                                            </div>
+                                        </div>
+                                        <p class="text-sm text-gray-600">"Very experienced doctor. Explained everything clearly about my condition."</p>
+                                    </div>
+                                    
+                                    <div class="border-b pb-3">
+                                        <div class="flex items-center justify-between mb-1">
+                                            <span class="font-medium">Priya M.</span>
+                                            <div class="flex text-yellow-400">
+                                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                                            </div>
+                                        </div>
+                                        <p class="text-sm text-gray-600">"Great doctor! Staff is also very cooperative. Highly recommended."</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Similar Doctors -->
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-6">Similar Doctors in Kota</h2>
+                
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="border rounded-lg p-4 hover:shadow-lg transition">
+                        <div class="flex items-center space-x-3 mb-3">
+                            <div class="w-12 h-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center">
+                                <i class="fas fa-user-md text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold">Dr. Suman Verma</h3>
+                                <p class="text-sm text-gray-600">Chest Physician</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-2">Maitri Hospital, Vigan Nagar</p>
+                        <div class="flex items-center text-sm">
+                            <i class="fas fa-star text-yellow-400 mr-1"></i>
+                            <span>4.7 (88 reviews)</span>
+                        </div>
+                        <a href="doctor-details.html?id=2" class="mt-3 text-blue-600 text-sm block">View Profile →</a>
+                    </div>
+                    
+                    <div class="border rounded-lg p-4 hover:shadow-lg transition">
+                        <div class="flex items-center space-x-3 mb-3">
+                            <div class="w-12 h-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center">
+                                <i class="fas fa-user-md text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold">Dr. Amit Jain</h3>
+                                <p class="text-sm text-gray-600">Pulmonologist</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-2">Kota Heart & Lung Institute</p>
+                        <div class="flex items-center text-sm">
+                            <i class="fas fa-star text-yellow-400 mr-1"></i>
+                            <span>4.5 (65 reviews)</span>
+                        </div>
+                        <a href="doctor-details.html?id=3" class="mt-3 text-blue-600 text-sm block">View Profile →</a>
+                    </div>
+                    
+                    <div class="border rounded-lg p-4 hover:shadow-lg transition">
+                        <div class="flex items-center space-x-3 mb-3">
+                            <div class="w-12 h-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center">
+                                <i class="fas fa-user-md text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold">Dr. Priya Sharma</h3>
+                                <p class="text-sm text-gray-600">Respiratory Specialist</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-2">Shree Hospital, Kunadi</p>
+                        <div class="flex items-center text-sm">
+                            <i class="fas fa-star text-yellow-400 mr-1"></i>
+                            <span>4.9 (200 reviews)</span>
+                        </div>
+                        <a href="doctor-details.html?id=4" class="mt-3 text-blue-600 text-sm block">View Profile →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Check login
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user) {
+            window.location.href = 'login.html';
+        } else {
+            document.getElementById('userName').textContent = user.firstName + ' ' + user.lastName;
+        }
+        
+        // Get doctor ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const doctorId = urlParams.get('id');
+        
+        // In real app, fetch doctor details based on ID
+        // For demo, we'll keep the static data
+        
+        function bookAppointment() {
+            const date = document.getElementById('appointmentDate').value;
+            const time = document.getElementById('appointmentTime').value;
+            const type = document.querySelector('input[name="appointmentType"]:checked').value;
+            
+            if (!date || !time) {
+                alert('Please select date and time for appointment');
+                return;
+            }
+            
+            alert(`Appointment booked successfully!\n\nDr. Rakesh Gupta\nDate: ${date}\nTime: ${time}\nType: ${type === 'clinic' ? 'In-Clinic' : 'Video'} Consultation\n\nYou will receive a confirmation on WhatsApp.`);
+        }
+        
+        function logout() {
+            localStorage.removeItem('user');
+            window.location.href = '../index.html';
+        }
+    </script>
+</body>
+</html>

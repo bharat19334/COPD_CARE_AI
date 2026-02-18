@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - COPD Care AI</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        body {
+            position: relative;
+            background-image: url('../assets/images/login-bg.jpg.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 0;
+        }
+        .w-full { position: relative; z-index: 2; }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center md:justify-start md:pl-16 lg:pl-24 p-4">
+    
+    <div class="w-full max-w-2xl">
+        <!-- Logo -->
+        <div class="text-center mb-8">
+            <a href="../index.html" class="inline-flex items-center space-x-3">
+                <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center">
+                    <i class="fas fa-lungs text-blue-600 text-2xl"></i>
+                </div>
+                <div class="text-left">
+                    <span class="text-2xl font-bold text-white">COPD Care</span>
+                    <span class="text-sm font-medium text-yellow-300 block">AI</span>
+                </div>
+            </a>
+        </div>
+        
+        <!-- Sign Up Card -->
+        <div class="glass-card rounded-2xl shadow-2xl p-8">
+            <h2 class="text-3xl font-bold text-gray-800 mb-2">Create Account</h2>
+            <p class="text-gray-600 mb-8">Join thousands of patients managing their COPD effectively</p>
+            
+            <form id="signupForm" onsubmit="handleSignup(event)">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- First Name -->
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">First Name</label>
+                        <input type="text" id="firstName" required 
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                               placeholder="Enter first name">
+                    </div>
+                    
+                    <!-- Last Name -->
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">Last Name</label>
+                        <input type="text" id="lastName" required 
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                               placeholder="Enter last name">
+                    </div>
+                    
+                    <!-- Email -->
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">Email Address</label>
+                        <input type="email" id="email" required 
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                               placeholder="Enter your email">
+                    </div>
+                    
+                    <!-- Phone -->
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">Phone Number</label>
+                        <input type="tel" id="phone" required 
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                               placeholder="Enter phone number">
+                    </div>
+                    
+                    <!-- Password -->
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">Password</label>
+                        <input type="password" id="password" required 
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                               placeholder="Create password">
+                    </div>
+                    
+                    <!-- Confirm Password -->
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">Confirm Password</label>
+                        <input type="password" id="confirmPassword" required 
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                               placeholder="Confirm password">
+                    </div>
+                    
+                    <!-- City -->
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">City</label>
+                        <input type="text" id="city" required 
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                               placeholder="Enter your city" value="Kota">
+                    </div>
+                    
+                    <!-- State -->
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">State</label>
+                        <select id="state" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <option value="Rajasthan">Rajasthan</option>
+                            <option value="Delhi">Delhi</option>
+                            <option value="UP">Uttar Pradesh</option>
+                            <option value="MP">Madhya Pradesh</option>
+                            <option value="Gujarat">Gujarat</option>
+                            <option value="Maharashtra">Maharashtra</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Terms -->
+                <div class="mt-6">
+                    <label class="flex items-center">
+                        <input type="checkbox" id="terms" required class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500">
+                        <span class="ml-2 text-gray-600">
+                            I agree to the <a href="#" class="text-blue-600">Terms of Service</a> and <a href="#" class="text-blue-600">Privacy Policy</a>
+                        </span>
+                    </label>
+                </div>
+                
+                <!-- Sign Up Button -->
+                <button type="submit" 
+                        class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition mt-6 flex items-center justify-center">
+                    <i class="fas fa-user-plus mr-2"></i>
+                    Create Free Account
+                </button>
+                
+                <!-- Login Link -->
+                <p class="text-center mt-6 text-gray-600">
+                    Already have an account? 
+                    <a href="login.html" class="text-blue-600 font-semibold hover:text-blue-700">Login Here</a>
+                </p>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Firebase SDKs (compat version) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        // 🔥 Firebase configuration (same as login)
+        const firebaseConfig = {
+            apiKey: "AIzaSyAKID2GWHPY0zJONKuAd3ixAmXw4rc-jXY",
+            authDomain: "copd-care.firebaseapp.com",
+            projectId: "copd-care",
+            storageBucket: "copd-care.firebasestorage.app",
+            messagingSenderId: "761280732177",
+            appId: "1:761280732177:web:815ec4e7968f7969fb65b0",
+            measurementId: "G-2VHWQ3FKTR"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        function handleSignup(event) {
+            event.preventDefault();
+
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const city = document.getElementById('city').value;
+            const state = document.getElementById('state').value;
+            const terms = document.getElementById('terms').checked;
+
+            if (!terms) {
+                alert('Please agree to the Terms of Service and Privacy Policy');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+
+            // Create user with Firebase Authentication
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+
+                    // Save additional user data to Firestore
+                    return db.collection('users').doc(user.uid).set({
+                        firstName: firstName,
+                        lastName: lastName,
+                        email: email,
+                        phone: phone,
+                        city: city,
+                        state: state,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                })
+                .then(() => {
+                    // Redirect to dashboard
+                    window.location.href = 'dashboard.html';
+                })
+                .catch((error) => {
+                    alert('Signup failed: ' + error.message);
+                });
+        }
+
+        // Agar user already logged in hai to direct dashboard bhej do
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                window.location.href = 'dashboard.html';
+            }
+        });
+    </script>
+</body>
+</html>
